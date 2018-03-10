@@ -1,0 +1,1 @@
+MySQL workshop. Programming school management.
