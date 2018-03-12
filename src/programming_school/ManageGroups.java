@@ -32,13 +32,9 @@ public class ManageGroups {
 
 	public static void loadAllGroupsInterface() {
 		Group[] groups;
-		try {
-			groups = Group.loadAllGroups();
-			for (Group gr : groups) {
-				System.out.println(gr.toString());
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		groups = Group.loadAllGroupsAlt();
+		for(Group group : groups) {
+			System.out.println(group.toString());
 		}
 	}
 
@@ -48,11 +44,7 @@ public class ManageGroups {
 		System.out.print("Enter new group name:");
 		String name = scanner.nextLine();
 		Group group = new Group(name);
-		try {
-			group.saveGroupToDB();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		group.saveGroupToDBAlt();
 	}
 
 	public static void editGroupInterface() {
@@ -61,20 +53,12 @@ public class ManageGroups {
 		System.out.print("Enter ID of the group you want to edit:");
 		int id = scanner.nextInt();
 		Group group = new Group();
-		try {
-			group = Group.loadGroupById(id);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		group = Group.loadGroupByIdAlt(id);
 		System.out.print("Enter the new name of the group:");
 		scanner.nextLine();
 		String name = scanner.nextLine();
 		group.setName(name);
-		try {
-			group.saveGroupToDB();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		group.saveGroupToDBAlt();
 	}
 
 	public static void deleteGroupInterface() {
@@ -83,15 +67,7 @@ public class ManageGroups {
 		System.out.print("Enter ID of the group you want to delete:");
 		int id = scanner.nextInt();
 		Group group = new Group();
-		try {
-			group = Group.loadGroupById(id);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			group.deleteGroup();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		group = Group.loadGroupByIdAlt(id);
+		group.deleteGroupAlt();
 	}
 }
