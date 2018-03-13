@@ -1,6 +1,5 @@
 package programming_school;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ManageGroups {
@@ -14,6 +13,7 @@ public class ManageGroups {
 			String command = scanner.nextLine();
 			switch (command) {
 			case "quit":
+				System.out.println("Bye!");
 				return;
 			case "add":
 				addGroupInterface();
@@ -32,7 +32,7 @@ public class ManageGroups {
 
 	public static void loadAllGroupsInterface() {
 		Group[] groups;
-		groups = Group.loadAllGroupsAlt();
+		groups = Group.loadAllGroups();
 		for(Group group : groups) {
 			System.out.println(group.toString());
 		}
@@ -41,33 +41,41 @@ public class ManageGroups {
 	public static void addGroupInterface() {
 		@SuppressWarnings({ "resource" })
 		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter new group name:");
+		System.out.print("Enter new group name: ");
 		String name = scanner.nextLine();
 		Group group = new Group(name);
-		group.saveGroupToDBAlt();
+		group.saveGroupToDB();
 	}
 
 	public static void editGroupInterface() {
 		@SuppressWarnings({ "resource" })
 		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter ID of the group you want to edit:");
+		System.out.print("Enter ID of the group you want to edit: ");
+		while(!scanner.hasNextInt()) scanner.next();
 		int id = scanner.nextInt();
 		Group group = new Group();
-		group = Group.loadGroupByIdAlt(id);
-		System.out.print("Enter the new name of the group:");
+		group = Group.loadGroupById(id);
+		if(group==null) {
+			return;
+		}
+		System.out.print("Enter the new name of the group: ");
 		scanner.nextLine();
 		String name = scanner.nextLine();
 		group.setName(name);
-		group.saveGroupToDBAlt();
+		group.saveGroupToDB();
 	}
 
 	public static void deleteGroupInterface() {
 		@SuppressWarnings({ "resource" })
 		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter ID of the group you want to delete:");
+		System.out.print("Enter ID of the group you want to delete: ");
+		while(!scanner.hasNextInt()) scanner.next();
 		int id = scanner.nextInt();
 		Group group = new Group();
-		group = Group.loadGroupByIdAlt(id);
-		group.deleteGroupAlt();
+		group = Group.loadGroupById(id);
+		if(group==null) {
+			return;
+		}
+		group.deleteGroup();
 	}
 }

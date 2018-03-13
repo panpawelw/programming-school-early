@@ -35,7 +35,7 @@ public class Group {
 		return id;
 	}
 
-	public void saveGroupToDBAlt() {
+	public void saveGroupToDB() {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -66,7 +66,7 @@ public class Group {
 		}
 	}
 	
-	static public Group loadGroupByIdAlt(int id) {
+	static public Group loadGroupById(int id) {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -87,31 +87,11 @@ public class Group {
 			System.out.println("Database error!");
 			e.printStackTrace();
 		}
-		return null;
-	}
-	static public Group loadGroupById(int id) throws SQLException {
-		SQLConnection connection = new SQLConnection();
-		String sql = "SELECT * FROM user_group WHERE id=?;";
-		PreparedStatement preparedStatement;
-		preparedStatement = connection.connect().prepareStatement(sql);
-		preparedStatement.setInt(1, id);
-		ResultSet resultSet = preparedStatement.executeQuery();
-		if (resultSet.next()) {
-			Group loadedGroup = new Group();
-			loadedGroup.id = resultSet.getInt("id");
-			loadedGroup.name = resultSet.getString("name");
-			preparedStatement.close();
-			resultSet.close();
-			connection.disconnect();
-			return loadedGroup;
-		}
-		preparedStatement.close();
-		resultSet.close();
-		connection.disconnect();
+		System.out.println("No such group!");
 		return null;
 	}
 	
-	static public Group[] loadAllGroupsAlt() {
+	static public Group[] loadAllGroups() {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -137,7 +117,7 @@ public class Group {
 		return gArray;
 	}
 
-	public void deleteGroupAlt() {
+	public void deleteGroup() {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -170,6 +150,7 @@ public class Group {
 	// gArray = groups.toArray(gArray);
 	// return gArray;
 	// }
+	
 	@Override
 	public String toString() {
 		String str = "id: " + this.id + " name: " + this.name;

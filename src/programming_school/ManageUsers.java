@@ -1,97 +1,94 @@
-//package programming_school;
-//
-//import java.sql.SQLException;
-//import java.util.Scanner;
-//
-//public class ManageUsers {
-//
-//	public static void main(String[] args) {
-//		@SuppressWarnings("resource")
-//		Scanner scanner = new Scanner(System.in);
-//		while (true) {
-//			loadAllUsersInterface();
-//			System.out.print("Enter command:");
-//			String command = scanner.nextLine();
-//			switch (command) {
-//			case "quit":
-//				return;
-//			case "add":
-//				addUserInterface();
-//				break;
-//			case "edit":
-//				editUserInterface();
-//				break;
-//			case "delete":
-//				deleteUserInterface();
-//				break;
-//			default:
-//				System.out.println("Unknown command!");
-//			}
-//		}
-//	}
-//
-//	public static void loadAllUsersInterface() {
-//		User[] users;
-//		try {
-//			users = User.loadAllUsers();
-//			for (User us : users) {
-//				System.out.println(us.toString());
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	public static void addUserInterface() {
-//		@SuppressWarnings({ "resource" })
-//		Scanner scanner = new Scanner(System.in);
-//		System.out.print("Enter new group name:");
-//		String name = scanner.nextLine();
-//		Group group = new Group(name);
-//		try {
-//			group.saveGroupToDB();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	public static void editUserInterface() {
-//		@SuppressWarnings({ "resource" })
-//		Scanner scanner = new Scanner(System.in);
-//		System.out.print("Enter ID of the group you want to edit:");
-//		int id = scanner.nextInt();
-//		Group group = new Group();
-//		try {
-//			group = Group.loadGroupById(id);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		System.out.print("Enter the new name of the group:");
-//		scanner.nextLine();
-//		String name = scanner.nextLine();
-//		group.setName(name);
-//		try {
-//			group.saveGroupToDB();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	public static void deleteUserInterface() {
-//		@SuppressWarnings({ "resource" })
-//		Scanner scanner = new Scanner(System.in);
-//		System.out.print("Enter ID of the group you want to delete:");
-//		int id = scanner.nextInt();
-//		Group group = new Group();
-//		try {
-//			group = Group.loadGroupById(id);
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		try {
-//			group.deleteGroup();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
-//}
+package programming_school;
+
+import java.util.Scanner;
+
+public class ManageUsers {
+
+	public static void main(String[] args) {
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+		while (true) {
+			loadAllUsersInterface();
+			System.out.print("Enter command:");
+			String command = scanner.nextLine();
+			switch (command) {
+			case "quit":
+				return;
+			case "add":
+				addUserInterface();
+				break;
+			case "edit":
+				editUserInterface();
+				break;
+			case "delete":
+				deleteUserInterface();
+				break;
+			default:
+				System.out.println("Unknown command!");
+			}
+		}
+	}
+
+	public static void loadAllUsersInterface() {
+		User[] users;
+		users = User.loadAllUsers();
+		for(User user : users) {
+			System.out.println(user.toString());
+		}
+	}
+
+	public static void addUserInterface() {
+		@SuppressWarnings({ "resource" })
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Enter new user name: ");
+		String name = scanner.nextLine();
+		System.out.print("Enter new user email: ");
+		String email = scanner.nextLine();
+		System.out.print("Enter new user password: ");
+		String password = scanner.nextLine();
+		System.out.print("Enter new user group number: ");
+		while(!scanner.hasNextInt()) scanner.next();
+		int person_group_id = scanner.nextInt();
+		User user = new User(name, email, password, person_group_id);
+		user.saveUserToDB();
+	}
+
+	public static void editUserInterface() {
+		@SuppressWarnings({ "resource" })
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Enter ID of the user you want to edit: ");
+		while(!scanner.hasNextInt()) scanner.next();
+		int id = scanner.nextInt();
+		User user = new User();
+		user = User.loadUserById(id);
+		if(user==null) {
+			return;
+		}
+		scanner.nextLine();
+		System.out.print("Enter new user name: ");
+		String name = scanner.nextLine();
+		System.out.print("Enter new user email: ");
+		String email = scanner.nextLine();
+		System.out.print("Enter new user password: ");
+		String password = scanner.nextLine();
+		System.out.print("Enter new user group number: ");
+		while(!scanner.hasNextInt()) scanner.next();
+		int person_group_id = scanner.nextInt();
+		user.setUsername(name);
+		user.setEmail(email);
+		user.setPassword(password);
+		user.setPerson_group_id(person_group_id);
+		user.saveUserToDB();
+	}
+
+	public static void deleteUserInterface() {
+		@SuppressWarnings({ "resource" })
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Enter ID of the user you want to delete: ");
+		while(!scanner.hasNextInt()) scanner.next();
+		int id = scanner.nextInt();
+		User user = new User();
+		user = User.loadUserById(id);
+		user.deleteUser();
+	}
+}
