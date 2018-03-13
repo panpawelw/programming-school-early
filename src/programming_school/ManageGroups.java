@@ -58,7 +58,7 @@ public class ManageGroups {
 		if(group==null) {
 			return;
 		}
-		System.out.print("Enter the new name of the group: ");
+		System.out.print("Enter new group name: ");
 		scanner.nextLine();
 		String name = scanner.nextLine();
 		group.setName(name);

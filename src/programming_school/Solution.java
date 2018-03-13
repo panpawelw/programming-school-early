@@ -102,7 +102,6 @@ public class Solution {
 	}
 
 	static public Solution loadSolutionById(Connection conn, int id) throws SQLException {
-	
 		String sql = "SELECT * FROM solution WHERE id=?";
 		PreparedStatement preparedStatement;
 		preparedStatement = conn.prepareStatement(sql);
