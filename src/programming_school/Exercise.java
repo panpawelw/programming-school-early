@@ -165,7 +165,7 @@ public class Exercise {
 //	}
 	@Override
 	public String toString() {
-		String str = "id: " + this.id + " title: " + this.title + " description: " + this.description;
-		return str;
+		String exerciseToString = "id: " + this.id + " title: " + this.title + " description: " + this.description;
+		return exerciseToString;
 	}
 }

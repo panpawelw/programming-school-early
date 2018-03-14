@@ -153,7 +153,7 @@ public class Group {
 	
 	@Override
 	public String toString() {
-		String str = "id: " + this.id + " name: " + this.name;
-		return str;
+		String groupToStr = "id: " + this.id + " name: " + this.name;
+		return groupToStr;
 	}
 }
