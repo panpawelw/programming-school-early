@@ -8,7 +8,8 @@ public class Demo {
 				+ "\n Select option"
 				+ "\n 1. TESTING"
 				+ "\n 2. ADMIN INTERFACE"
-				+ "\n 3. USER INTERFACE \n"
+				+ "\n 3. USER INTERFACE"
+				+ "\n 4. EXIT \n"
 				+ "\n > ");
 	}
 }

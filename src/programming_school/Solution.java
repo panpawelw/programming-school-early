@@ -228,26 +228,34 @@ public class Solution {
 		usersSolutionsArray = usersSolutions.toArray(usersSolutionsArray);
 		return usersSolutionsArray;
 	}
-//	static public Solution[] loadAllByEerciseId(Connection conn) throws SQLException {
-//		
-//		ArrayList<Solution> solutions = new ArrayList<Solution>();
-//		String sql = "SELECT * FROM solution";
-//		PreparedStatement preparedStatement;
-//		preparedStatement = conn.prepareStatement(sql);
-//		ResultSet resultSet = preparedStatement.executeQuery();
-//		while(resultSet.next()) {
-//			Solution loadedSolution = new Solution();
-//			loadedSolution.id = resultSet.getInt("id");
-//			loadedSolution.created = resultSet.getString("created");
-//			loadedSolution.updated = resultSet.getString("updated");
-//			loadedSolution.description = resultSet.getString("description");
-//			loadedSolution.exercise_id = resultSet.getInt("exercise_id");
-//			loadedSolution.users_id = resultSet.getInt("users_id");
-//		}
-//		Solution[] sArray = new Solution[solutions.size()];
-//		sArray = solutions.toArray(sArray);
-//		return sArray;
-//	}
+	static public Solution[] loadAllByEerciseId(int exercise_id) {
+		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
+		String user = "root";
+		String pswd = "mojSQL";
+		ArrayList<Solution> solutions = new ArrayList<Solution>();
+		try(Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
+			String sql = "SELECT * FROM solution WHERE exercise_id=? ORDER BY created;";
+			try(PreparedStatement ps = con.prepareStatement(sql)) {
+				ps.setInt(1, exercise_id);
+				try(ResultSet rs = ps.executeQuery()) {
+					while(rs.next()) {
+						Solution loadedSolution = new Solution();
+						loadedSolution.id = rs.getInt("id");
+						loadedSolution.created = rs.getTimestamp("created");
+						loadedSolution.updated = rs.getTimestamp("updated");
+						loadedSolution.description = rs.getString("description");
+						loadedSolution.users_id = rs.getInt("users_id");
+					}
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Database error!");
+			e.printStackTrace();
+		}
+		Solution[] sArray = new Solution[solutions.size()];
+		sArray = solutions.toArray(sArray);
+		return sArray;
+	}
 	
 	@Override
 	public String toString() {

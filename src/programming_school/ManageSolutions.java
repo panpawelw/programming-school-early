@@ -28,6 +28,9 @@ public class ManageSolutions {
 			case "user":
 				usersSolutionsInterface();
 				break;
+			case "exercise":
+				exerciseSolutionsInterface();
+				break;
 			default:
 				System.out.println("Unknown command!");
 			}
@@ -111,6 +114,20 @@ public class ManageSolutions {
 		Solution[] usersSolutions;
 		usersSolutions = Solution.loadAllByUserId(users_id);
 		for (Solution solution : usersSolutions) {
+			System.out.println(solution.toString());
+		}
+	}
+	
+	public static void exerciseSolutionsInterface() {
+		@SuppressWarnings({ "resource" })
+		Scanner scanner = new Scanner(System.in);
+		ManageExercises.loadAllExercisesInterface();
+		System.out.print("Enter ID of the exercise which solutions of you'd like to browse: ");
+		while (!scanner.hasNextInt()) scanner.next();
+		int exercise_id = scanner.nextInt();
+		Solution[] exerciseSolutions;
+		exerciseSolutions = Solution.loadAllByEerciseId(exercise_id);
+		for (Solution solution : exerciseSolutions) {
 			System.out.println(solution.toString());
 		}
 	}
