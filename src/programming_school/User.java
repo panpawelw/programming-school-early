@@ -177,6 +177,37 @@ public class User {
 		}
 	}
 	
+	public static User[] loadAllbyGroupId(int person_group_id) {
+		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
+		String user = "root";
+		String pswd = "mojSQL";
+		ArrayList<User> groupUsers = new ArrayList<User>();
+		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
+			String sql = "SELECT * FROM users WHERE person_group_id=?;";
+			try (PreparedStatement ps = con.prepareStatement(sql)) {
+				ps.setInt(1, person_group_id);
+				try (ResultSet rs = ps.executeQuery()) {
+					while(rs.next()) {
+						User loadedUser = new User();
+						loadedUser.id = rs.getInt("id");
+						loadedUser.username = rs.getString("username");
+						loadedUser.password = rs.getString("password");
+						loadedUser.email = rs.getString("email");
+						loadedUser.person_group_id = rs.getInt("person_group_id");
+						groupUsers.add(loadedUser);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Database error!");
+			e.printStackTrace();
+		}
+		User[] guArray = new User[groupUsers.size()];
+		guArray = groupUsers.toArray(guArray);
+		return guArray;
+	}
+	
+	
 	@Override
 	public String toString() {
 		String userToString = this.id + ": " + this.username + " email: " + this.email + " group: " + this.person_group_id;

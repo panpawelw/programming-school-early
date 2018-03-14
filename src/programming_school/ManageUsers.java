@@ -24,6 +24,9 @@ public class ManageUsers {
 			case "delete":
 				deleteUserInterface();
 				break;
+			case "group":
+				loadAllbyGroupIdInterface();
+				break;
 			default:
 				System.out.println("Unknown command!");
 			}
@@ -91,5 +94,18 @@ public class ManageUsers {
 		User user = new User();
 		user = User.loadUserById(id);
 		user.deleteUser();
+	}
+	
+	public static void loadAllbyGroupIdInterface() {
+		@SuppressWarnings({ "resource" })
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Enter ID of the group of users you want to display: ");
+		while(!scanner.hasNextInt()) scanner.next();
+		int person_group_id = scanner.nextInt();
+		User[] groupUsers;
+		groupUsers = User.loadAllbyGroupId(person_group_id);
+		for(User user : groupUsers) {
+			System.out.println(user.toString());
+		}
 	}
 }
