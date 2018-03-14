@@ -163,6 +163,7 @@ public class Exercise {
 //		eArray = exercises.toArray(eArray);
 //		return eArray;
 //	}
+	
 	@Override
 	public String toString() {
 		String exerciseToString = "id: " + this.id + " title: " + this.title + " description: " + this.description;

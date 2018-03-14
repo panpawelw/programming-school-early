@@ -8,6 +8,7 @@ public class ManageExercises {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
+			System.out.println("***EXERCISES LIST***");
 			loadAllExercisesInterface();
 			System.out.print("Enter command:");
 			String command = scanner.nextLine();

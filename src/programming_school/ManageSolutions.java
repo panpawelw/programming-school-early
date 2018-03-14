@@ -9,6 +9,7 @@ public class ManageSolutions {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
+			System.out.println("***SOLUTIONS LIST***");
 			loadAllSolutionsInterface();
 			System.out.print("Enter command:");
 			String command = scanner.nextLine();
@@ -23,6 +24,9 @@ public class ManageSolutions {
 				break;
 			case "delete":
 				deleteSolutionInterface();
+				break;
+			case "user":
+				usersSolutionsInterface();
 				break;
 			default:
 				System.out.println("Unknown command!");
@@ -94,5 +98,20 @@ public class ManageSolutions {
 		Solution solution = new Solution();
 		solution = Solution.loadSolutionById(id);
 		solution.deleteSolution();
+	}
+	
+	public static void usersSolutionsInterface() {
+		@SuppressWarnings({ "resource" })
+		Scanner scanner = new Scanner(System.in);
+		ManageUsers.loadAllUsersInterface();
+		System.out.print("Enter ID of the user who's solutions you'd like to browse: ");
+		while (!scanner.hasNextInt())
+			scanner.next();
+		int users_id = scanner.nextInt();
+		Solution[] usersSolutions;
+		usersSolutions = Solution.loadAllByUserId(users_id);
+		for (Solution solution : usersSolutions) {
+			System.out.println(solution.toString());
+		}
 	}
 }

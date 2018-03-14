@@ -8,6 +8,7 @@ public class ManageUsers {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
+			System.out.println("***USERS LIST***");
 			loadAllUsersInterface();
 			System.out.print("Enter command:");
 			String command = scanner.nextLine();

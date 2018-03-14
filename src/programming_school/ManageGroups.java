@@ -8,6 +8,7 @@ public class ManageGroups {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
+			System.out.println("***GROUPS LIST***");
 			loadAllGroupsInterface();
 			System.out.print("Enter command:");
 			String command = scanner.nextLine();
