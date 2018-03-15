@@ -134,23 +134,6 @@ public class Group {
 		}
 	}
 
-	// static public Group[] loadAllByGroup(Connection conn) throws SQLException {
-	// ArrayList<Group> groups= new ArrayList<Group>();
-	// String sql = "SELECT * FROM user_group;";
-	// PreparedStatement preparedStatement;
-	// preparedStatement = conn.prepareStatement(sql);
-	// ResultSet resultSet = preparedStatement.executeQuery();
-	// while(resultSet.next()) {
-	// Group loadedGroup = new Group();
-	// loadedGroup.id = resultSet.getInt("id");
-	// loadedGroup.name = resultSet.getString("name");
-	// groups.add(loadedGroup);
-	// }
-	// Group gArray[] = new Group[groups.size()];
-	// gArray = groups.toArray(gArray);
-	// return gArray;
-	// }
-	
 	@Override
 	public String toString() {
 		String groupToStr = "id: " + this.id + " name: " + this.name;

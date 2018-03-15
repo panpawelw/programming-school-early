@@ -145,25 +145,6 @@ public class Exercise {
 		}
 	}
 	
-//	static public Exercise[] loadAllByUserId(Connection conn) throws SQLException {
-//		
-//		ArrayList<Exercise> exercises = new ArrayList<Exercise>();
-//		String sql = "SELECT * FROM exercise";
-//		PreparedStatement preparedStatement;
-//		preparedStatement = conn.prepareStatement(sql);
-//		ResultSet resultSet = preparedStatement.executeQuery();
-//		while(resultSet.next()) {
-//			Exercise loadedExercise = new Exercise();
-//			loadedExercise.id = resultSet.getInt("id");
-//			loadedExercise.title = resultSet.getString("title");
-//			loadedExercise.description = resultSet.getString("description");
-//			exercises.add(loadedExercise);
-//		}
-//		Exercise[] eArray = new Exercise[exercises.size()];
-//		eArray = exercises.toArray(eArray);
-//		return eArray;
-//	}
-	
 	@Override
 	public String toString() {
 		String exerciseToString = "id: " + this.id + " title: " + this.title + " description: " + this.description;

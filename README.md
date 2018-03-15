@@ -1,1 +1,1 @@
-MySQL workshop. Programming school management.
+Java JDBC MySQL workshop. Programming school management.

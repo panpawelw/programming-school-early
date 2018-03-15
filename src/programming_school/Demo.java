@@ -11,29 +11,26 @@ public class Demo {
 			System.out.println("PROGRAMMING SCHOOL");
 			System.out.println("Java MySQL Project");
 			System.out.println("Select option");
-			System.out.println("1. TESTING");
-			System.out.println("2. ADMIN INTERFACE");
-			System.out.println("3. USER INTERFACE");
-			System.out.println("4. EXIT");
+			System.out.println("1. ADMIN INTERFACE");
+			System.out.println("2. USER INTERFACE");
+			System.out.println("3. EXIT");
 			System.out.println();
 			System.out.print("> ");
 			while(!scanner.hasNextInt()) scanner.next();
 			int mainMenu = scanner.nextInt();
 			switch (mainMenu) {
 			case 1:
-				System.out.println("TESTING");
-				break;
-			case 2:
+				System.out.println("ADMIN INTERFACE");
 				adminInteface();
 				break;
-			case 3:
+			case 2:
 				System.out.println("USER INTERFACE");
 				break;
-			case 4:
+			case 3:
 				System.out.println("Thanks, bye!");
 				return;
 			default:
-				System.out.println("Choose 1,2,3,4 or 5.");
+				System.out.println("Choose 1,2 or 3");
 			}
 		}
 	}
@@ -45,18 +42,19 @@ public class Demo {
 			System.out.println("2. GROUP MANAGEMENT");
 			System.out.println("3. EXERCISE MANAGEMENT");
 			System.out.println("4. SOLUTION MANAGEMENT");
-			System.out.println("5. EXIT");
+			System.out.println("5. USERS AND EXERCISES");
+			System.out.println("6. EXIT");
 			System.out.print("> ");
 			while(!scanner.hasNextInt()) scanner.next();
 			adminMenu = scanner.nextInt();
 			switch (adminMenu) {
 			case 1:
 				int adminUserMenu = 0;
-				while (adminUserMenu!=4) {
-					System.out.println("********************USERS LIST*********************");
+				while (adminUserMenu!=5) {
+					System.out.println("******************************USERS LIST******************************");
 					ManageUsers.loadAllUsersInterface();
-					System.out.println("***************************************************");
-					System.out.println("1. ADD USER; 2. EDIT USER; 3. DELETE USER; 4. EXIT;");
+					System.out.println("**********************************************************************");
+					System.out.println("1. ADD USER; 2. EDIT USER; 3. DELETE USER; 4. USERS BY GROUP; 5. EXIT;");
 					System.out.print("> ");
 					while(!scanner.hasNextInt()) scanner.next();
 					adminUserMenu = scanner.nextInt();
@@ -71,9 +69,12 @@ public class Demo {
 						ManageUsers.deleteUserInterface();
 						break;
 					case 4:
+						ManageUsers.loadAllbyGroupIdInterface();
+						break;
+					case 5:
 						break;
 					default:
-						System.out.println("Choose 1,2,3 or 4.");
+						System.out.println("Choose 1,2,3,4 or 5.");
 						break;
 					}
 				}
@@ -136,20 +137,45 @@ public class Demo {
 				break;
 			case 4:
 				int adminSolutionMenu = 0;
-				while (adminSolutionMenu!=3) {
-					System.out.println("*******************SOLUTIONS LIST*****************");
+				while (adminSolutionMenu!=6) {
+					System.out.println("**************************************************SOLUTIONS LIST*************************************************");
 					ManageSolutions.loadAllSolutionsInterface();
-					System.out.println("**************************************************");
-					System.out.println("1. ADD SOLUTION; 2. VIEW USERS SOLUTIONS; 3. EXIT;");
+					System.out.println("*****************************************************************************************************************");
+					System.out.println("1. ADD SOLUTION; 2. EDIT SOLUTION; 3. DELETE SOLUTION; 4. ADD SOLUTION TO USER; 5. VIEW USERS SOLUTIONS; 6. EXIT;");
 					System.out.print("> ");
 					while(!scanner.hasNextInt()) scanner.next();
 					adminSolutionMenu = scanner.nextInt();
 					switch (adminSolutionMenu) {
 					case 1:
-//						ManageExercises.addExerciseInterface();
+						ManageSolutions.addSolutionInterface();
 						break;
 					case 2:
-//						ManageExercises.editExerciseInterface();
+						ManageSolutions.editSolutionInterface();
+						break;
+					case 3:
+						ManageSolutions.deleteSolutionInterface();
+						break;
+					case 4:
+						break;
+					default:
+						System.out.println("Choose 1,2,3,4,5 OR 6.");
+						break;
+					}
+				}
+				break;
+			case 5:
+				int adminUserExerciseMenu = 0;
+				while (adminUserExerciseMenu!=6) {
+					System.out.println("1. ADD EXERCISE TO USER - CREATE SOLUTION; 2. SOLUTIONS BY USERS; 3. EXIT;");
+					System.out.print("> ");
+					while(!scanner.hasNextInt()) scanner.next();
+					adminUserExerciseMenu = scanner.nextInt();
+					switch (adminUserExerciseMenu) {
+					case 1:
+//						ManageSolutions.addSolutionInterface();
+						break;
+					case 2:
+//						ManageSolutions.editSolutionInterface();
 						break;
 					case 3:
 						break;
@@ -159,7 +185,7 @@ public class Demo {
 					}
 				}
 				break;
-			case 5:
+			case 6:
 				return;
 			default:
 				System.out.println("Choose 1,2,3,4 or 5.");

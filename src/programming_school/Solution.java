@@ -228,7 +228,7 @@ public class Solution {
 		usersSolutionsArray = usersSolutions.toArray(usersSolutionsArray);
 		return usersSolutionsArray;
 	}
-	static public Solution[] loadAllByEerciseId(int exercise_id) {
+	static public Solution[] loadAllByExerciseId(int exercise_id) {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";

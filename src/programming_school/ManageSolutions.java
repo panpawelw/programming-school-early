@@ -126,7 +126,7 @@ public class ManageSolutions {
 		while (!scanner.hasNextInt()) scanner.next();
 		int exercise_id = scanner.nextInt();
 		Solution[] exerciseSolutions;
-		exerciseSolutions = Solution.loadAllByEerciseId(exercise_id);
+		exerciseSolutions = Solution.loadAllByExerciseId(exercise_id);
 		for (Solution solution : exerciseSolutions) {
 			System.out.println(solution.toString());
 		}
