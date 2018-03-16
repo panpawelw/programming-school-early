@@ -7,18 +7,17 @@ public class Demo {
 	static Scanner scanner = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-		
-		while(true) {
-			if(args.length>0) {
-				int user=0;
-				try {
-					user = Integer.parseInt(args[0]);
-				}catch(NumberFormatException e) {
-					System.err.println("User number must be an integer!");
-					user = 0;
-				}
-				userInterface(user);
+		if(args.length>0) {
+			int user=0;
+			try {
+				user = Integer.parseInt(args[0]);
+			}catch(NumberFormatException e) {
+				System.err.println("User number must be an integer!");
+				user = 0;
 			}
+			userInterface(user);
+		}
+		while(true) {
 			System.out.println("PROGRAMMING SCHOOL");
 			System.out.println("Java MySQL Project");
 			System.out.println("Select option");
@@ -149,11 +148,11 @@ public class Demo {
 				break;
 			case 4:
 				int adminSolutionMenu = 0;
-				while (adminSolutionMenu!=6) {
-					System.out.println("**************************************************SOLUTIONS LIST*************************************************");
+				while (adminSolutionMenu!=7) {
+					System.out.println("*************************************************************SOLUTIONS LIST************************************************************");
 					ManageSolutions.loadAllSolutionsInterface();
-					System.out.println("*****************************************************************************************************************");
-					System.out.println("1. ADD SOLUTION; 2. EDIT SOLUTION; 3. DELETE SOLUTION; 4. ADD SOLUTION TO USER; 5. VIEW USERS SOLUTIONS; 6. EXIT;");
+					System.out.println("***************************************************************************************************************************************");
+					System.out.println("1. ADD SOLUTION; 2. EDIT SOLUTION; 3. DELETE SOLUTION; 4. ADD SOLUTION TO USER; 5. SOLUTIONS BY USER; 6. SOLUTIONS BY EXERCISE; 7.EXIT;");
 					System.out.print("> ");
 					while(!scanner.hasNextInt()) scanner.next();
 					adminSolutionMenu = scanner.nextInt();
@@ -168,6 +167,48 @@ public class Demo {
 						ManageSolutions.deleteSolutionInterface();
 						break;
 					case 4:
+						ManageUsers.loadAllUsersInterface();
+						System.out.println("Select user:");
+						System.out.print("> ");
+						while(!scanner.hasNextInt()) scanner.next();
+						int users_id = scanner.nextInt();
+						System.out.println("Exercises you don't have solutions for yet:");
+						Exercise[] notByUser = Exercise.allExercisesNotByUserId(users_id);
+						for(Exercise exercise : notByUser) {
+							System.out.println(exercise.toString());
+						}
+						System.out.println("Select exercise:");
+						System.out.print("> ");
+						while(!scanner.hasNextInt()) scanner.next();
+						int exercise_id = scanner.nextInt();
+						boolean exerciseExists = false;
+						Solution[] usersSolutions;
+						usersSolutions = Solution.loadAllByUserId(users_id);
+						for(Solution solution : usersSolutions) {
+							if(solution.getExercise_id()==exercise_id) {
+								exerciseExists = true;
+							}
+						}
+						if(exerciseExists==false) {
+							System.out.println("Enter solution description:");
+							System.out.print("> ");
+							scanner.next();
+							String description = scanner.nextLine();
+							Solution solution = new Solution(description, exercise_id, users_id);
+							solution.saveSolutionToDB();
+							solution.saveSolutionToDB();
+						}else {
+							System.out.println("This user's solution for this exercise already exists!");
+						}
+
+						break;
+					case 5:
+						ManageSolutions.usersSolutionsInterface(0);
+						break;
+					case 6:
+						ManageSolutions.exerciseSolutionsInterface();
+						break;
+					case 7:
 						break;
 					default:
 						System.out.println("Choose 1,2,3,4,5 or 6.");
@@ -199,7 +240,7 @@ public class Demo {
 						solution.saveSolutionToDB();
 						break;
 					case 2:
-						ManageSolutions.usersSolutionsInterface();
+						ManageSolutions.usersSolutionsInterface(0);
 						break;
 					case 3:
 						break;
@@ -217,8 +258,10 @@ public class Demo {
 			}
 		}
 	}
-	public static void userInterface(int user) {
+	
+	public static void userInterface(int user) {																							// USER MENU
 		User selectedUser = null;
+		int users_id=user;
 		System.out.println("USER INTERFACE");
 		while(selectedUser==null) {
 			if(user==0) {
@@ -231,33 +274,52 @@ public class Demo {
 				System.out.println("User selected: " + user);
 			}
 			selectedUser = User.loadUserById(user);
+			users_id = user;
 			user = 0;
 		}
 		int userMenu = 0;
 		while (userMenu!=3) {
 			System.out.println(selectedUser.toString());
-			System.out.println("1. ADD SOLUTION; 2. VIEW YOUR SOLUTIONS; 3. EXIT;");
+			System.out.println("1. ADD EXERCISE - CREATE SOLUTION; 2. VIEW YOUR SOLUTIONS; 3. EXIT;");
 			System.out.print("> ");
 			while(!scanner.hasNextInt()) scanner.next();
 			userMenu = scanner.nextInt();
 			switch (userMenu) {
 			case 1:
-				ManageUsers.loadAllUsersInterface();
-				System.out.println("Select user:");
-				System.out.print("> ");
-				while(!scanner.hasNextInt()) scanner.next();
-				int user_id = scanner.nextInt();
-				ManageExercises.loadAllExercisesInterface();
+				System.out.println("Exercises you don't have solutions for yet:");
+				Exercise[] notByUser = Exercise.allExercisesNotByUserId(users_id);
+				for(Exercise exercise : notByUser) {
+					System.out.println(exercise.toString());
+				}
 				System.out.println("Select exercise:");
 				System.out.print("> ");
 				while(!scanner.hasNextInt()) scanner.next();
 				int exercise_id = scanner.nextInt();
-				String description = null;
-				Solution solution = new Solution(description, exercise_id, user_id);
-				solution.saveSolutionToDB();
+				boolean exerciseExists = false;
+				Solution[] usersSolutions;
+				usersSolutions = Solution.loadAllByUserId(users_id);
+				for(Solution solution : usersSolutions) {
+					if(solution.getExercise_id()==exercise_id) {
+						exerciseExists = true;
+					}
+				}
+				if(exerciseExists==false) {
+					System.out.println("Enter solution description:");
+					System.out.print("> ");
+					scanner.next();
+					String description = scanner.nextLine();
+					Solution solution = new Solution(description, exercise_id, users_id);
+					solution.saveSolutionToDB();
+					solution.saveSolutionToDB();
+				}else {
+					System.out.println("Your solution for this exercise already exists!");
+				}
+
 				break;
 			case 2:
-				ManageSolutions.usersSolutionsInterface();
+				System.out.println("************YOUR SOLUTIONS LIST************");
+				ManageSolutions.usersSolutionsInterface(users_id);
+				System.out.println();
 				break;
 			case 3:
 				break;

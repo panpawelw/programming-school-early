@@ -145,6 +145,34 @@ public class Exercise {
 		}
 	}
 	
+	static public Exercise[] allExercisesNotByUserId(int users_id) {
+		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
+		String user = "root";
+		String pswd = "mojSQL";
+		ArrayList<Exercise> exercises = new ArrayList<Exercise>();
+		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
+			String sql = "SELECT * FROM exercise WHERE exercise.id NOT IN (SELECT exercise.id FROM exercise JOIN solution ON exercise.id = solution.exercise_id WHERE users_id = ?);";
+			try (PreparedStatement ps = con.prepareStatement(sql)) {
+				ps.setInt(1, users_id);
+				try (ResultSet rs = ps.executeQuery()) {
+					while(rs.next()) {
+						Exercise loadedExercise = new Exercise();
+						loadedExercise.id = rs.getInt("id");
+						loadedExercise.title = rs.getString("title");
+						loadedExercise.description = rs.getString("description");
+						exercises.add(loadedExercise);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Database error!");
+			e.printStackTrace();
+		}
+		Exercise eArray[] = new Exercise[exercises.size()];
+		eArray = exercises.toArray(eArray);
+		return eArray;
+	}
+	
 	@Override
 	public String toString() {
 		String exerciseToString = "id: " + this.id + " title: " + this.title + " description: " + this.description;

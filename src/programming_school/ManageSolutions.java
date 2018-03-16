@@ -26,7 +26,7 @@ public class ManageSolutions {
 				deleteSolutionInterface();
 				break;
 			case "user":
-				usersSolutionsInterface();
+				usersSolutionsInterface(0);
 				break;
 			case "exercise":
 				exerciseSolutionsInterface();
@@ -103,14 +103,16 @@ public class ManageSolutions {
 		solution.deleteSolution();
 	}
 	
-	public static void usersSolutionsInterface() {
-		@SuppressWarnings({ "resource" })
-		Scanner scanner = new Scanner(System.in);
-		ManageUsers.loadAllUsersInterface();
-		System.out.print("Enter ID of the user who's solutions you'd like to browse: ");
-		while (!scanner.hasNextInt())
-			scanner.next();
-		int users_id = scanner.nextInt();
+	public static void usersSolutionsInterface(int users_id) {
+		if(users_id==0) {
+			@SuppressWarnings({ "resource" })
+			Scanner scanner = new Scanner(System.in);
+			ManageUsers.loadAllUsersInterface();
+			System.out.print("Enter ID of the user whose solutions you'd like to browse: ");
+			while (!scanner.hasNextInt())
+				scanner.next();
+			users_id = scanner.nextInt();
+		}
 		Solution[] usersSolutions;
 		usersSolutions = Solution.loadAllByUserId(users_id);
 		for (Solution solution : usersSolutions) {

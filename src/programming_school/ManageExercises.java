@@ -25,6 +25,9 @@ public class ManageExercises {
 			case "delete":
 				deleteExerciseInterface();
 				break;
+			case "notuser":
+				allExercisesNotByUserIdInterface();
+				break;
 			default:
 				System.out.println("Unknown command!");
 			}
@@ -83,5 +86,12 @@ public class ManageExercises {
 			return;
 		}
 		exercise.deleteExercise();
+	}
+	public static void allExercisesNotByUserIdInterface() {
+		Exercise[] notByUser = Exercise.allExercisesNotByUserId(2);
+		for(Exercise exercise : notByUser) {
+			System.out.println(exercise.toString());
+		}
+		
 	}
 }

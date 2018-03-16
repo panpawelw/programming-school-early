@@ -232,7 +232,7 @@ public class Solution {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
-		ArrayList<Solution> solutions = new ArrayList<Solution>();
+		ArrayList<Solution> exerciseSolutions = new ArrayList<Solution>();
 		try(Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
 			String sql = "SELECT * FROM solution WHERE exercise_id=? ORDER BY created;";
 			try(PreparedStatement ps = con.prepareStatement(sql)) {
@@ -244,7 +244,9 @@ public class Solution {
 						loadedSolution.created = rs.getTimestamp("created");
 						loadedSolution.updated = rs.getTimestamp("updated");
 						loadedSolution.description = rs.getString("description");
+						loadedSolution.exercise_id = rs.getInt("exercise_id");
 						loadedSolution.users_id = rs.getInt("users_id");
+						exerciseSolutions.add(loadedSolution);
 					}
 				}
 			}
@@ -252,8 +254,8 @@ public class Solution {
 			System.out.println("Database error!");
 			e.printStackTrace();
 		}
-		Solution[] sArray = new Solution[solutions.size()];
-		sArray = solutions.toArray(sArray);
+		Solution[] sArray = new Solution[exerciseSolutions.size()];
+		sArray = exerciseSolutions.toArray(sArray);
 		return sArray;
 	}
 	
