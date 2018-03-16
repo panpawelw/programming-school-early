@@ -7,7 +7,18 @@ public class Demo {
 	static Scanner scanner = new Scanner(System.in);
 	
 	public static void main(String[] args) {
+		
 		while(true) {
+			if(args.length>0) {
+				int user=0;
+				try {
+					user = Integer.parseInt(args[0]);
+				}catch(NumberFormatException e) {
+					System.err.println("User number must be an integer!");
+					user = 0;
+				}
+				userInterface(user);
+			}
 			System.out.println("PROGRAMMING SCHOOL");
 			System.out.println("Java MySQL Project");
 			System.out.println("Select option");
@@ -20,11 +31,10 @@ public class Demo {
 			int mainMenu = scanner.nextInt();
 			switch (mainMenu) {
 			case 1:
-				System.out.println("ADMIN INTERFACE");
 				adminInteface();
 				break;
 			case 2:
-				System.out.println("USER INTERFACE");
+				userInterface(0);
 				break;
 			case 3:
 				System.out.println("Thanks, bye!");
@@ -37,6 +47,7 @@ public class Demo {
 	}
 	
 	public static void adminInteface() {																			// ADMIN MENU
+		System.out.println("ADMIN INTERFACE");
 		int adminMenu = 0;
 		while (adminMenu!=5) {
 			System.out.println("1. USER MANAGEMENT");
@@ -202,6 +213,56 @@ public class Demo {
 				return;
 			default:
 				System.out.println("Choose 1,2,3,4 or 5.");
+				break;
+			}
+		}
+	}
+	public static void userInterface(int user) {
+		User selectedUser = null;
+		System.out.println("USER INTERFACE");
+		while(selectedUser==null) {
+			if(user==0) {
+				ManageUsers.loadAllUsersInterface();
+				System.out.println("Select user:");
+				System.out.print("> ");
+				while(!scanner.hasNextInt()) scanner.next();
+				user = scanner.nextInt();
+			}else {
+				System.out.println("User selected: " + user);
+			}
+			selectedUser = User.loadUserById(user);
+			user = 0;
+		}
+		int userMenu = 0;
+		while (userMenu!=3) {
+			System.out.println(selectedUser.toString());
+			System.out.println("1. ADD SOLUTION; 2. VIEW YOUR SOLUTIONS; 3. EXIT;");
+			System.out.print("> ");
+			while(!scanner.hasNextInt()) scanner.next();
+			userMenu = scanner.nextInt();
+			switch (userMenu) {
+			case 1:
+				ManageUsers.loadAllUsersInterface();
+				System.out.println("Select user:");
+				System.out.print("> ");
+				while(!scanner.hasNextInt()) scanner.next();
+				int user_id = scanner.nextInt();
+				ManageExercises.loadAllExercisesInterface();
+				System.out.println("Select exercise:");
+				System.out.print("> ");
+				while(!scanner.hasNextInt()) scanner.next();
+				int exercise_id = scanner.nextInt();
+				String description = null;
+				Solution solution = new Solution(description, exercise_id, user_id);
+				solution.saveSolutionToDB();
+				break;
+			case 2:
+				ManageSolutions.usersSolutionsInterface();
+				break;
+			case 3:
+				break;
+			default:
+				System.out.println("Choose 1,2 or 3.");
 				break;
 			}
 		}
