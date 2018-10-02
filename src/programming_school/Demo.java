@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Demo {
 
-	static Scanner scanner = new Scanner(System.in);
+	private static Scanner scanner = new Scanner(System.in);
 	
 	public static void main(String[] args) {
 		if(args.length>0) {
@@ -45,7 +45,7 @@ public class Demo {
 		}
 	}
 	
-	public static void adminInteface() {																			// ADMIN MENU
+	private static void adminInteface() {																// ADMIN MENU
 		System.out.println("ADMIN INTERFACE");
 		int adminMenu = 0;
 		while (adminMenu!=5) {
@@ -181,22 +181,16 @@ public class Demo {
 						System.out.print("> ");
 						while(!scanner.hasNextInt()) scanner.next();
 						int exercise_id = scanner.nextInt();
-						boolean exerciseExists = false;
 						Solution[] usersSolutions;
 						usersSolutions = Solution.loadAllByUserId(users_id);
+						boolean exerciseExists = false;
 						for(Solution solution : usersSolutions) {
 							if(solution.getExercise_id()==exercise_id) {
 								exerciseExists = true;
 							}
 						}
-						if(exerciseExists==false) {
-							System.out.println("Enter solution description:");
-							System.out.print("> ");
-							scanner.next();
-							String description = scanner.nextLine();
-							Solution solution = new Solution(description, exercise_id, users_id);
-							solution.saveSolutionToDB();
-							solution.saveSolutionToDB();
+						if(!exerciseExists) {
+							getNewExerciseName(exercise_id, users_id);
 						}else {
 							System.out.println("This user's solution for this exercise already exists!");
 						}
@@ -259,7 +253,7 @@ public class Demo {
 		}
 	}
 	
-	public static void userInterface(int user) {																							// USER MENU
+	private static void userInterface(int user) {														// USER MENU
 		User selectedUser = null;
 		int users_id=user;
 		System.out.println("USER INTERFACE");
@@ -303,14 +297,8 @@ public class Demo {
 						exerciseExists = true;
 					}
 				}
-				if(exerciseExists==false) {
-					System.out.println("Enter solution description:");
-					System.out.print("> ");
-					scanner.next();
-					String description = scanner.nextLine();
-					Solution solution = new Solution(description, exercise_id, users_id);
-					solution.saveSolutionToDB();
-					solution.saveSolutionToDB();
+				if(!exerciseExists) {
+					getNewExerciseName(exercise_id, users_id);
 				}else {
 					System.out.println("Your solution for this exercise already exists!");
 				}
@@ -328,5 +316,15 @@ public class Demo {
 				break;
 			}
 		}
+	}
+
+	private static void getNewExerciseName(int exercise_id, int users_id) {
+		System.out.println("Enter solution description:");
+		System.out.print("> ");
+		scanner.next();
+		String description = scanner.nextLine();
+		Solution solution = new Solution(description, exercise_id, users_id);
+		solution.saveSolutionToDB();
+		solution.saveSolutionToDB();
 	}
 }
