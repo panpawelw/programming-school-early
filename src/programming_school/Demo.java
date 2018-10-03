@@ -190,7 +190,7 @@ public class Demo {
 							}
 						}
 						if(!exerciseExists) {
-							getNewExerciseName(exercise_id, users_id);
+							getNewSolutionName(exercise_id, users_id);
 						}else {
 							System.out.println("This user's solution for this exercise already exists!");
 						}
@@ -298,7 +298,7 @@ public class Demo {
 					}
 				}
 				if(!exerciseExists) {
-					getNewExerciseName(exercise_id, users_id);
+					getNewSolutionName(exercise_id, users_id);
 				}else {
 					System.out.println("Your solution for this exercise already exists!");
 				}
@@ -318,12 +318,14 @@ public class Demo {
 		}
 	}
 
-	private static void getNewExerciseName(int exercise_id, int users_id) {
+	private static void getNewSolutionName(int exercise_id, int users_id) {
 		System.out.println("Enter solution description:");
 		System.out.print("> ");
 		scanner.next();
 		String description = scanner.nextLine();
+		System.out.println(description);
 		Solution solution = new Solution(description, exercise_id, users_id);
+		System.out.println(solution.toString());
 		solution.saveSolutionToDB();
 		solution.saveSolutionToDB();
 	}

@@ -132,14 +132,7 @@ public class Solution {
 				ps.setInt(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
-						Solution loadedSolution = new Solution();
-						loadedSolution.id = rs.getInt("id");
-						loadedSolution.created = rs.getTimestamp("created");
-						loadedSolution.updated = rs.getTimestamp("updated");
-						loadedSolution.description = rs.getString("description");
-						loadedSolution.exercise_id = rs.getInt("exercise_id");
-						loadedSolution.users_id = rs.getInt("users_id");
-						return loadedSolution;
+						return loadSolution(rs);
 					}
 				}
 			}
@@ -156,19 +149,12 @@ public class Solution {
 		String user = "root";
 		String pswd = "mojSQL";
 		ArrayList<Solution> solutions = new ArrayList<Solution>();
+		String sql = "SELECT * FROM solution;";
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
-			String sql = "SELECT * FROM solution;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				try (ResultSet rs = ps.executeQuery()) {
-					while(rs.next()) {
-						Solution loadedSolution = new Solution();
-						loadedSolution.id = rs.getInt("id");
-						loadedSolution.created = rs.getTimestamp("created");
-						loadedSolution.updated = rs.getTimestamp("updated");
-						loadedSolution.description = rs.getString("description");
-						loadedSolution.exercise_id = rs.getInt("exercise_id");
-						loadedSolution.users_id = rs.getInt("users_id");
-						solutions.add(loadedSolution);
+					while (rs.next()) {
+						solutions.add(loadSolution(rs));
 					}
 				}
 			}
@@ -199,54 +185,25 @@ public class Solution {
 	}
 
 	public static Solution[] loadAllByUserId(int users_id) {
-		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
-		String user = "root";
-		String pswd = "mojSQL";
-		ArrayList<Solution> usersSolutions = new ArrayList<Solution>();
-		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
-			String sql = "SELECT * FROM solution WHERE users_id=?;";
-			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				ps.setInt(1, users_id);
-				try (ResultSet rs = ps.executeQuery()) {
-					while(rs.next()) {
-						Solution loadedSolution = new Solution();
-						loadedSolution.id = rs.getInt("id");
-						loadedSolution.created = rs.getTimestamp("created");
-						loadedSolution.updated = rs.getTimestamp("updated");
-						loadedSolution.description = rs.getString("description");
-						loadedSolution.exercise_id = rs.getInt("exercise_id");
-						loadedSolution.users_id = rs.getInt("users_id");
-						usersSolutions.add(loadedSolution);
-					}
-				}
-			}
-		} catch (SQLException e) {
-			System.out.println("Database error!");
-			e.printStackTrace();
-		}
-		Solution[] usersSolutionsArray = new Solution[usersSolutions.size()];
-		usersSolutionsArray = usersSolutions.toArray(usersSolutionsArray);
-		return usersSolutionsArray;
+		String sql = "SELECT * FROM solution WHERE users_id=?;";
+		return loadSolutionsBy(sql, users_id);
 	}
 	static public Solution[] loadAllByExerciseId(int exercise_id) {
+		String sql = "SELECT * FROM solution WHERE exercise_id=? ORDER BY created;";
+		return loadSolutionsBy(sql, exercise_id);
+	}
+
+	static private Solution[] loadSolutionsBy(String sql, int param) {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
-		ArrayList<Solution> exerciseSolutions = new ArrayList<Solution>();
-		try(Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
-			String sql = "SELECT * FROM solution WHERE exercise_id=? ORDER BY created;";
-			try(PreparedStatement ps = con.prepareStatement(sql)) {
-				ps.setInt(1, exercise_id);
-				try(ResultSet rs = ps.executeQuery()) {
-					while(rs.next()) {
-						Solution loadedSolution = new Solution();
-						loadedSolution.id = rs.getInt("id");
-						loadedSolution.created = rs.getTimestamp("created");
-						loadedSolution.updated = rs.getTimestamp("updated");
-						loadedSolution.description = rs.getString("description");
-						loadedSolution.exercise_id = rs.getInt("exercise_id");
-						loadedSolution.users_id = rs.getInt("users_id");
-						exerciseSolutions.add(loadedSolution);
+		ArrayList<Solution> solutionsByParamArrayList = new ArrayList<>();
+		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
+			try (PreparedStatement ps = con.prepareStatement(sql)) {
+				ps.setInt(1, param);
+				try (ResultSet rs = ps.executeQuery()) {
+					while (rs.next()) {
+						solutionsByParamArrayList.add(loadSolution(rs));
 					}
 				}
 			}
@@ -254,11 +211,22 @@ public class Solution {
 			System.out.println("Database error!");
 			e.printStackTrace();
 		}
-		Solution[] sArray = new Solution[exerciseSolutions.size()];
-		sArray = exerciseSolutions.toArray(sArray);
-		return sArray;
+		Solution[] solutionsByParamArray = new Solution[solutionsByParamArrayList.size()];
+		solutionsByParamArray = solutionsByParamArrayList.toArray(solutionsByParamArray);
+		return solutionsByParamArray;
 	}
-	
+
+	static private Solution loadSolution(ResultSet rs) throws SQLException{
+		Solution loadedSolution = new Solution();
+		loadedSolution.id = rs.getInt("id");
+		loadedSolution.created = rs.getTimestamp("created");
+		loadedSolution.updated = rs.getTimestamp("updated");
+		loadedSolution.description = rs.getString("description");
+		loadedSolution.exercise_id = rs.getInt("exercise_id");
+		loadedSolution.users_id = rs.getInt("users_id");
+		return loadedSolution;
+	}
+
 	@Override
 	public String toString() {
 		String solutionToString = this.id + ": " + this.description + " created: " + this.created + " updated: " + this.updated + " exercise: " + this.exercise_id + " user: " + this.users_id;
