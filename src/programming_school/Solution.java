@@ -25,7 +25,7 @@ public class Solution {
 	public Solution(String description, int exercise_id, int users_id) {
 		this.description = description;
 		this.exercise_id = exercise_id;
-		this.users_id = users_id;
+		this.user_id = user_id;
 	}
 	
 	public Solution(Timestamp created, Timestamp updated, String description, int exercise_id, int users_id) {
@@ -69,12 +69,12 @@ public class Solution {
 		this.exercise_id = exercise_id;
 	}
 
-	public int getUsers_id() {
-		return users_id;
+	public int getUser_id() {
+		return user_id;
 	}
 
-	public void setUsers_id(int users_id) {
-		this.users_id = users_id;
+	public void setUsers_id(int user_id) {
+		this.user_id = user_id;
 	}
 
 	public int getId() {
@@ -96,7 +96,7 @@ public class Solution {
 					ps.setTimestamp(2, null);
 					ps.setString(3, this.description);
 					ps.setInt(4, this.exercise_id);
-					ps.setInt(5, this.users_id);
+					ps.setInt(5, this.user_id);
 					ps.executeUpdate();
 					try (ResultSet rs = ps.getGeneratedKeys()) {
 						if (rs.next()) {
@@ -105,11 +105,11 @@ public class Solution {
 					}
 				}
 			} else {
-				String sql = "UPDATE solution SET updated=Now(), description=?, exercise_id=?, users_id=? WHERE id = ?;";
+				String sql = "UPDATE solution SET updated=Now(), description=?, exercise_id=?, user_id=? WHERE id = ?;";
 				try (PreparedStatement ps = con.prepareStatement(sql)) {
 					ps.setString(1, this.description);
 					ps.setInt(2, this.exercise_id);
-					ps.setInt(3, this.users_id);
+					ps.setInt(3, this.user_id);
 					ps.setInt(4, this.id);
 					ps.executeUpdate();
 				}
@@ -184,9 +184,9 @@ public class Solution {
 		}
 	}
 
-	public static Solution[] loadAllByUserId(int users_id) {
-		String sql = "SELECT * FROM solution WHERE users_id=?;";
-		return loadSolutionsBy(sql, users_id);
+	static public Solution[] loadAllByUserId(int user_id) {
+		String sql = "SELECT * FROM solution WHERE user_id=?;";
+		return loadSolutionsBy(sql, user_id);
 	}
 	static public Solution[] loadAllByExerciseId(int exercise_id) {
 		String sql = "SELECT * FROM solution WHERE exercise_id=? ORDER BY created;";
@@ -223,13 +223,13 @@ public class Solution {
 		loadedSolution.updated = rs.getTimestamp("updated");
 		loadedSolution.description = rs.getString("description");
 		loadedSolution.exercise_id = rs.getInt("exercise_id");
-		loadedSolution.users_id = rs.getInt("users_id");
+		loadedSolution.user_id = rs.getInt("user_id");
 		return loadedSolution;
 	}
 
 	@Override
 	public String toString() {
-		String solutionToString = this.id + ": " + this.description + " created: " + this.created + " updated: " + this.updated + " exercise: " + this.exercise_id + " user: " + this.users_id;
+		String solutionToString = this.id + ": " + this.description + " created: " + this.created + " updated: " + this.updated + " exercise: " + this.exercise_id + " user: " + this.user_id;
 		return solutionToString;
 	}
 }

@@ -63,9 +63,8 @@ public class ManageUsers {
 		System.out.print("Enter ID of the user you want to edit: ");
 		while(!scanner.hasNextInt()) scanner.next();
 		int id = scanner.nextInt();
-		User user = new User();
-		user = User.loadUserById(id);
-		if(user==null) {
+		User user = User.loadUserById(id);
+		if (user == null) {
 			return;
 		}
 		scanner.nextLine();
@@ -81,7 +80,7 @@ public class ManageUsers {
 		user.setUsername(name);
 		user.setEmail(email);
 		user.setPassword(password);
-		user.setPerson_group_id(person_group_id);
+		user.setUsergroup_id(person_group_id);
 		user.saveUserToDB();
 	}
 
@@ -91,8 +90,7 @@ public class ManageUsers {
 		System.out.print("Enter ID of the user you want to delete: ");
 		while(!scanner.hasNextInt()) scanner.next();
 		int id = scanner.nextInt();
-		User user = new User();
-		user = User.loadUserById(id);
+		User user = User.loadUserById(id);
 		user.deleteUser();
 	}
 	

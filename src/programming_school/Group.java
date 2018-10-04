@@ -53,7 +53,7 @@ public class Group {
 					}
 				}
 			} else {
-				String sql = "UPDATE user_group SET name=? WHERE id=?;";
+				String sql = "UPDATE usergroup SET name=? WHERE id=?;";
 				try (PreparedStatement ps = con.prepareStatement(sql)) {
 					ps.setString(1, this.name);
 					ps.setInt(2, this.id);
@@ -71,7 +71,7 @@ public class Group {
 		String user = "root";
 		String pswd = "mojSQL";
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
-			String sql = "SELECT * FROM user_group WHERE id=?;";
+			String sql = "SELECT * FROM usergroup WHERE id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
@@ -97,7 +97,7 @@ public class Group {
 		String pswd = "mojSQL";
 		ArrayList<Group> groups = new ArrayList<Group>();
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
-			String sql = "SELECT * FROM user_group;";
+			String sql = "SELECT * FROM usergroup;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				try (ResultSet rs = ps.executeQuery()) {
 					while(rs.next()) {
@@ -122,7 +122,7 @@ public class Group {
 		String user = "root";
 		String pswd = "mojSQL";
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
-			String sql = "DELETE FROM user_group WHERE id=?";
+			String sql = "DELETE FROM usergroup WHERE id=?";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, this.id);
 				ps.executeUpdate();

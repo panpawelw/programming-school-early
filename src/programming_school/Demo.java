@@ -26,8 +26,7 @@ public class Demo {
 			System.out.println("3. EXIT");
 			System.out.println();
 			System.out.print("> ");
-			while(!scanner.hasNextInt()) scanner.next();
-			int mainMenu = scanner.nextInt();
+			int mainMenu = getIntFromConsole();
 			switch (mainMenu) {
 			case 1:
 				adminInteface();
@@ -44,8 +43,9 @@ public class Demo {
 			}
 		}
 	}
-	
-	private static void adminInteface() {																// ADMIN MENU
+
+//	ADMIN MENU
+	private static void adminInteface() {
 		System.out.println("ADMIN INTERFACE");
 		int adminMenu = 0;
 		while (adminMenu!=5) {
@@ -56,8 +56,7 @@ public class Demo {
 			System.out.println("5. USERS AND EXERCISES");
 			System.out.println("6. EXIT");
 			System.out.print("> ");
-			while(!scanner.hasNextInt()) scanner.next();
-			adminMenu = scanner.nextInt();
+			adminMenu = getIntFromConsole();
 			switch (adminMenu) {
 			case 1:
 				int adminUserMenu = 0;
@@ -67,8 +66,7 @@ public class Demo {
 					System.out.println("**********************************************************************");
 					System.out.println("1. ADD USER; 2. EDIT USER; 3. DELETE USER; 4. USERS BY GROUP; 5. EXIT;");
 					System.out.print("> ");
-					while(!scanner.hasNextInt()) scanner.next();
-					adminUserMenu = scanner.nextInt();
+					adminUserMenu = getIntFromConsole();
 					switch (adminUserMenu) {
 					case 1:
 						ManageUsers.addUserInterface();
@@ -98,8 +96,7 @@ public class Demo {
 					System.out.println("******************************************************");
 					System.out.println("1. ADD GROUP; 2. EDIT GROUP; 3. DELETE GROUP; 4. EXIT;");
 					System.out.print("> ");
-					while(!scanner.hasNextInt()) scanner.next();
-					adminGroupMenu = scanner.nextInt();
+					adminGroupMenu = getIntFromConsole();
 					switch (adminGroupMenu) {
 					case 1:
 						ManageGroups.addGroupInterface();
@@ -126,8 +123,7 @@ public class Demo {
 					System.out.println("***************************************************************");
 					System.out.println("1. ADD EXERCISE; 2. EDIT EXERCISE; 3. DELETE EXERCISE; 4. EXIT;");
 					System.out.print("> ");
-					while(!scanner.hasNextInt()) scanner.next();
-					adminExerciseMenu = scanner.nextInt();
+					adminExerciseMenu = getIntFromConsole();
 					switch (adminExerciseMenu) {
 					case 1:
 						ManageExercises.addExerciseInterface();
@@ -154,8 +150,7 @@ public class Demo {
 					System.out.println("***************************************************************************************************************************************");
 					System.out.println("1. ADD SOLUTION; 2. EDIT SOLUTION; 3. DELETE SOLUTION; 4. ADD SOLUTION TO USER; 5. SOLUTIONS BY USER; 6. SOLUTIONS BY EXERCISE; 7.EXIT;");
 					System.out.print("> ");
-					while(!scanner.hasNextInt()) scanner.next();
-					adminSolutionMenu = scanner.nextInt();
+					adminSolutionMenu = getIntFromConsole();
 					switch (adminSolutionMenu) {
 					case 1:
 						ManageSolutions.addSolutionInterface();
@@ -170,8 +165,7 @@ public class Demo {
 						ManageUsers.loadAllUsersInterface();
 						System.out.println("Select user:");
 						System.out.print("> ");
-						while(!scanner.hasNextInt()) scanner.next();
-						int users_id = scanner.nextInt();
+						int users_id = getIntFromConsole();
 						System.out.println("Exercises you don't have solutions for yet:");
 						Exercise[] notByUser = Exercise.allExercisesNotByUserId(users_id);
 						for(Exercise exercise : notByUser) {
@@ -179,8 +173,7 @@ public class Demo {
 						}
 						System.out.println("Select exercise:");
 						System.out.print("> ");
-						while(!scanner.hasNextInt()) scanner.next();
-						int exercise_id = scanner.nextInt();
+						int exercise_id = getIntFromConsole();
 						Solution[] usersSolutions;
 						usersSolutions = Solution.loadAllByUserId(users_id);
 						boolean exerciseExists = false;
@@ -215,8 +208,7 @@ public class Demo {
 				while (adminUserExerciseMenu!=3) {
 					System.out.println("1. ADD EXERCISE TO USER - CREATE SOLUTION; 2. SOLUTIONS BY USERS; 3. EXIT;");
 					System.out.print("> ");
-					while(!scanner.hasNextInt()) scanner.next();
-					adminUserExerciseMenu = scanner.nextInt();
+					adminUserExerciseMenu = getIntFromConsole();
 					switch (adminUserExerciseMenu) {
 					case 1:
 						ManageUsers.loadAllUsersInterface();
@@ -255,20 +247,20 @@ public class Demo {
 	
 	private static void userInterface(int user) {														// USER MENU
 		User selectedUser = null;
-		int users_id=user;
+		int user_id=user;
 		System.out.println("USER INTERFACE");
 		while(selectedUser==null) {
 			if(user==0) {
 				ManageUsers.loadAllUsersInterface();
-				System.out.println("Select user:");
+				System.out.println("Select user (0 to quit):");
 				System.out.print("> ");
-				while(!scanner.hasNextInt()) scanner.next();
-				user = scanner.nextInt();
+				user = getIntFromConsole();
+				if (user==0) { return; }
 			}else {
 				System.out.println("User selected: " + user);
 			}
 			selectedUser = User.loadUserById(user);
-			users_id = user;
+			user_id = user;
 			user = 0;
 		}
 		int userMenu = 0;
@@ -276,12 +268,11 @@ public class Demo {
 			System.out.println(selectedUser.toString());
 			System.out.println("1. ADD EXERCISE - CREATE SOLUTION; 2. VIEW YOUR SOLUTIONS; 3. EXIT;");
 			System.out.print("> ");
-			while(!scanner.hasNextInt()) scanner.next();
-			userMenu = scanner.nextInt();
+			userMenu = getIntFromConsole();
 			switch (userMenu) {
 			case 1:
 				System.out.println("Exercises you don't have solutions for yet:");
-				Exercise[] notByUser = Exercise.allExercisesNotByUserId(users_id);
+				Exercise[] notByUser = Exercise.allExercisesNotByUserId(user_id);
 				for(Exercise exercise : notByUser) {
 					System.out.println(exercise.toString());
 				}
@@ -291,22 +282,22 @@ public class Demo {
 				int exercise_id = scanner.nextInt();
 				boolean exerciseExists = false;
 				Solution[] usersSolutions;
-				usersSolutions = Solution.loadAllByUserId(users_id);
+				usersSolutions = Solution.loadAllByUserId(user_id);
 				for(Solution solution : usersSolutions) {
 					if(solution.getExercise_id()==exercise_id) {
 						exerciseExists = true;
 					}
 				}
 				if(!exerciseExists) {
-					getNewSolutionName(exercise_id, users_id);
+					getNewSolutionName(exercise_id, user_id);
 				}else {
 					System.out.println("Your solution for this exercise already exists!");
 				}
-
 				break;
 			case 2:
 				System.out.println("************YOUR SOLUTIONS LIST************");
-				ManageSolutions.usersSolutionsInterface(users_id);
+				ManageSolutions.usersSolutionsInterface(user_id);
+				System.out.println("*******************************************");
 				System.out.println();
 				break;
 			case 3:
@@ -318,15 +309,21 @@ public class Demo {
 		}
 	}
 
-	private static void getNewSolutionName(int exercise_id, int users_id) {
+	private static void getNewSolutionName(int exercise_id, int user_id) {
 		System.out.println("Enter solution description:");
 		System.out.print("> ");
 		scanner.next();
 		String description = scanner.nextLine();
 		System.out.println(description);
-		Solution solution = new Solution(description, exercise_id, users_id);
+		Solution solution = new Solution(description, exercise_id, user_id);
 		System.out.println(solution.toString());
 		solution.saveSolutionToDB();
 		solution.saveSolutionToDB();
+	}
+
+//	get integer from console input
+	private static int getIntFromConsole() {
+		while(!scanner.hasNextInt()) scanner.next();
+		return scanner.nextInt();
 	}
 }

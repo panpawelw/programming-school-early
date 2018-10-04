@@ -17,15 +17,15 @@ public class User {
 	private String username;
 	private String password;
 	private String email;
-	private int person_group_id;
+	private int usergroup_id;
 
 	public User() {}
 
-	public User(String username, String email, String password, int person_group_id) {
+	public User(String username, String email, String password, int usergroup_id) {
 		this.username = username;
 		this.email = email;
 		this.setPassword(password);
-		this.person_group_id = person_group_id;
+		this.usergroup_id = usergroup_id;
 	}
 
 	public String getEmail() {
@@ -56,12 +56,12 @@ public class User {
 		this.password = BCrypt.hashpw(password, BCrypt.gensalt());
 	}
 
-	public int getPerson_group_id() {
-		return person_group_id;
+	public int getUsergroup_id() {
+		return usergroup_id;
 	}
 
-	public void setPerson_group_id(int person_group_id) {
-		this.person_group_id = person_group_id;
+	public void setUsergroup_id(int person_group_id) {
+		this.usergroup_id = person_group_id;
 	}
 
 	public void saveUserToDB() {
@@ -76,7 +76,7 @@ public class User {
 					ps.setString(1, this.username);
 					ps.setString(2, this.email);
 					ps.setString(3, this.password);
-					ps.setInt(4, this.person_group_id);
+					ps.setInt(4, this.usergroup_id);
 					ps.executeUpdate();
 					try (ResultSet rs = ps.getGeneratedKeys()) {
 						if (rs.next()) {
@@ -85,12 +85,12 @@ public class User {
 					}
 				}
 			} else {
-				String sql = "UPDATE users SET username=?, email=?, password=?, person_group_id=? WHERE id = ?;";
+				String sql = "UPDATE user SET username=?, email=?, password=?, usergroup_id=? WHERE id = ?;";
 				try (PreparedStatement ps = con.prepareStatement(sql)) {
 					ps.setString(1, this.username);
 					ps.setString(2, this.email);
 					ps.setString(3, this.password);
-					ps.setInt(4, this.person_group_id);
+					ps.setInt(4, this.usergroup_id);
 					ps.setInt(5, this.id);
 					ps.executeUpdate();
 				}
@@ -108,18 +108,12 @@ public class User {
 		String user = "root";
 		String pswd = "mojSQL";
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
-			String sql = "SELECT * FROM users WHERE id=?;";
+			String sql = "SELECT * FROM user WHERE id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
-						User loadedUser = new User();
-						loadedUser.id = rs.getInt("id");
-						loadedUser.username = rs.getString("username");
-						loadedUser.password = rs.getString("password");
-						loadedUser.email = rs.getString("email");
-						loadedUser.person_group_id = rs.getInt("person_group_id");
-						return loadedUser;
+						return loadUser(rs);
 					}
 				}
 			}
@@ -132,32 +126,7 @@ public class User {
 	}
 	
 	static public User[] loadAllUsers() {
-		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
-		String user = "root";
-		String pswd = "mojSQL";
-		ArrayList<User> users = new ArrayList<User>();
-		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
-			String sql = "SELECT * FROM users;";
-			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				try (ResultSet rs = ps.executeQuery()) {
-					while(rs.next()) {
-						User loadedUser = new User();
-						loadedUser.id = rs.getInt("id");
-						loadedUser.username = rs.getString("username");
-						loadedUser.password = rs.getString("password");
-						loadedUser.email = rs.getString("email");
-						loadedUser.person_group_id = rs.getInt("person_group_id");
-						users.add(loadedUser);
-					}
-				}
-			}
-		} catch (SQLException e) {
-			System.out.println("Database error!");
-			e.printStackTrace();
-		}
-		User[] uArray = new User[users.size()];
-		uArray = users.toArray(uArray);
-		return uArray;
+		return loadUsersBy(true, 0);
 	}
 	
 	public void deleteUser() {
@@ -165,7 +134,7 @@ public class User {
 		String user = "root";
 		String pswd = "mojSQL";
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
-			String sql = "DELETE FROM users WHERE id=?";
+			String sql = "DELETE FROM user WHERE id=?";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, this.id);
 				ps.executeUpdate();
@@ -176,41 +145,15 @@ public class User {
 			e.printStackTrace();
 		}
 	}
-	
-	public static User[] loadAllbyGroupId(int person_group_id) {
-		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
-		String user = "root";
-		String pswd = "mojSQL";
-		ArrayList<User> groupUsers = new ArrayList<User>();
-		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
-			String sql = "SELECT * FROM users WHERE person_group_id=?;";
-			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				ps.setInt(1, person_group_id);
-				try (ResultSet rs = ps.executeQuery()) {
-					while(rs.next()) {
-						User loadedUser = new User();
-						loadedUser.id = rs.getInt("id");
-						loadedUser.username = rs.getString("username");
-						loadedUser.password = rs.getString("password");
-						loadedUser.email = rs.getString("email");
-						loadedUser.person_group_id = rs.getInt("person_group_id");
-						groupUsers.add(loadedUser);
-					}
-				}
-			}
-		} catch (SQLException e) {
-			System.out.println("Database error!");
-			e.printStackTrace();
-		}
-		User[] guArray = new User[groupUsers.size()];
-		guArray = groupUsers.toArray(guArray);
-		return guArray;
+
+	public static User[] loadAllbyGroupId(int usergroup_id) {
+		return loadUsersBy(false, usergroup_id);
 	}
 	
 	
 	@Override
 	public String toString() {
-		String userToString = this.id + ": " + this.username + " email: " + this.email + " group: " + this.person_group_id;
+		String userToString = this.id + ": " + this.username + " email: " + this.email + " group: " + this.usergroup_id;
 		return userToString;
 	}
 }
