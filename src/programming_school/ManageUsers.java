@@ -80,7 +80,7 @@ public class ManageUsers {
 		user.setUsername(name);
 		user.setEmail(email);
 		user.setPassword(password);
-		user.setUsergroup_id(person_group_id);
+		user.setUsergroup_id(usergroup_id);
 		user.saveUserToDB();
 	}
 

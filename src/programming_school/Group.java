@@ -76,9 +76,7 @@ public class Group {
 				ps.setInt(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
-						Group loadedGroup = new Group();
-						loadedGroup.id = rs.getInt("id");
-						loadedGroup.name = rs.getString("name");
+						Group loadedGroup = loadGroup(rs);
 						return loadedGroup;
 					}
 				}
@@ -132,6 +130,13 @@ public class Group {
 			System.out.println("Database error!");
 			e.printStackTrace();
 		}
+	}
+
+	private static Group loadGroup(ResultSet rs) throws SQLException {
+		Group loadedGroup = new Group();
+		loadedGroup.id = rs.getInt("id");
+		loadedGroup.name = rs.getString("name");
+		return loadedGroup;
 	}
 
 	@Override

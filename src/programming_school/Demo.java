@@ -23,7 +23,7 @@ public class Demo {
 			System.out.println("Select option");
 			System.out.println("1. ADMIN INTERFACE");
 			System.out.println("2. USER INTERFACE");
-			System.out.println("3. EXIT");
+			System.out.println("0. EXIT");
 			System.out.println();
 			System.out.print("> ");
 			int mainMenu = getIntFromConsole();
@@ -34,12 +34,12 @@ public class Demo {
 			case 2:
 				userInterface(0);
 				break;
-			case 3:
+			case 0:
 				System.out.println("Thanks, bye!");
 				scanner.close();
 				return;
 			default:
-				System.out.println("Choose 1,2 or 3");
+				System.out.println("Choose 1,2 or 0");
 			}
 		}
 	}
@@ -47,16 +47,16 @@ public class Demo {
 //	ADMIN MENU
 	private static void adminInteface() {
 		System.out.println("ADMIN INTERFACE");
-		int adminMenu = 0;
-		while (adminMenu!=5) {
+//		int adminMenu = 0;
+		while (true) {
 			System.out.println("1. USER MANAGEMENT");
 			System.out.println("2. GROUP MANAGEMENT");
 			System.out.println("3. EXERCISE MANAGEMENT");
 			System.out.println("4. SOLUTION MANAGEMENT");
 			System.out.println("5. USERS AND EXERCISES");
-			System.out.println("6. EXIT");
+			System.out.println("0. EXIT");
 			System.out.print("> ");
-			adminMenu = getIntFromConsole();
+			int adminMenu = getIntFromConsole();
 			switch (adminMenu) {
 			case 1:
 				int adminUserMenu = 0;
@@ -236,10 +236,10 @@ public class Demo {
 					}
 				}
 				break;
-			case 6:
+			case 0:
 				return;
 			default:
-				System.out.println("Choose 1,2,3,4 or 5.");
+				System.out.println("Choose 1,2,3,4,5 or 0.");
 				break;
 			}
 		}
@@ -322,7 +322,7 @@ public class Demo {
 	}
 
 //	get integer from console input
-	private static int getIntFromConsole() {
+	public static int getIntFromConsole() {
 		while(!scanner.hasNextInt()) scanner.next();
 		return scanner.nextInt();
 	}

@@ -32,9 +32,8 @@ public class ManageGroups {
 	}
 
 	public static void loadAllGroupsInterface() {
-		Group[] groups;
-		groups = Group.loadAllGroups();
-		for(Group group : groups) {
+		Group[] groups = Group.loadAllGroups();
+		for (Group group : groups) {
 			System.out.println(group.toString());
 		}
 	}
@@ -60,7 +59,6 @@ public class ManageGroups {
 			return;
 		}
 		System.out.print("Enter new group name: ");
-		scanner.nextLine();
 		String name = scanner.nextLine();
 		group.setName(name);
 		group.saveGroupToDB();
