@@ -165,9 +165,9 @@ public class Demo {
 						ManageUsers.loadAllUsersInterface();
 						System.out.println("Select user:");
 						System.out.print("> ");
-						int users_id = getIntFromConsole();
+						int user_id = getIntFromConsole();
 						System.out.println("Exercises you don't have solutions for yet:");
-						Exercise[] notByUser = Exercise.allExercisesNotByUserId(users_id);
+						Exercise[] notByUser = Exercise.allExercisesNotByUserId(user_id);
 						for(Exercise exercise : notByUser) {
 							System.out.println(exercise.toString());
 						}
@@ -175,7 +175,7 @@ public class Demo {
 						System.out.print("> ");
 						int exercise_id = getIntFromConsole();
 						Solution[] usersSolutions;
-						usersSolutions = Solution.loadAllByUserId(users_id);
+						usersSolutions = Solution.loadAllByUserId(user_id);
 						boolean exerciseExists = false;
 						for(Solution solution : usersSolutions) {
 							if(solution.getExercise_id()==exercise_id) {
@@ -183,7 +183,7 @@ public class Demo {
 							}
 						}
 						if(!exerciseExists) {
-							getNewSolutionName(exercise_id, users_id);
+							getNewSolutionName(exercise_id, user_id);
 						}else {
 							System.out.println("This user's solution for this exercise already exists!");
 						}

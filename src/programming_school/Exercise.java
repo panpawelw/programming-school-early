@@ -85,11 +85,7 @@ public class Exercise {
 				ps.setInt(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
-						Exercise loadedExercise = new Exercise();
-						loadedExercise.id = rs.getInt("id");
-						loadedExercise.title = rs.getString("title");
-						loadedExercise.description = rs.getString("description");
-						return loadedExercise;
+						return loadExercise(rs);
 					}
 				}
 			}
@@ -172,7 +168,41 @@ public class Exercise {
 		eArray = exercises.toArray(eArray);
 		return eArray;
 	}
-	
+
+	private static Exercise[] loadExercisesBy(boolean loadAll, int param){
+		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
+		String exercise = "root";
+		String pswd = "mojSQL";
+		String sql;
+		if(loadAll) sql = "SELECT * FROM exercise;";
+		else sql = "SELECT * FROM exercise WHERE exercise.id NOT IN (SELECT exercise.id FROM exercise JOIN solution ON exercise.id = solution.exercise_id WHERE user_id = ?);";
+		ArrayList<Exercise> exercisesByParamArrayList = new ArrayList<>();
+		try (Connection con = DriverManager.getConnection(dbUrl, exercise, pswd)) {
+			try (PreparedStatement ps = con.prepareStatement(sql)) {
+				if(param!=0) ps.setInt(1, param);
+				try (ResultSet rs = ps.executeQuery()) {
+					while (rs.next()) {
+						exercisesByParamArrayList.add(loadExercise(rs));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Database error!");
+			e.printStackTrace();
+		}
+		Exercise[] exercisesByParamArray = new Exercise[exercisesByParamArrayList.size()];
+		exercisesByParamArray = exercisesByParamArrayList.toArray(exercisesByParamArray);
+		return exercisesByParamArray;
+	}
+
+	private static Exercise loadExercise(ResultSet rs) throws SQLException {
+		Exercise loadedExercise = new Exercise();
+		loadedExercise.id = rs.getInt("id");
+		loadedExercise.title = rs.getString("title");
+		loadedExercise.description = rs.getString("description");
+		return loadedExercise;
+	}
+
 	@Override
 	public String toString() {
 		String exerciseToString = "id: " + this.id + " title: " + this.title + " description: " + this.description;

@@ -35,9 +35,8 @@ public class ManageExercises {
 	}
 
 	public static void loadAllExercisesInterface() {
-		Exercise[] exercises;
-		exercises = Exercise.loadAllExercises();
-		for(Exercise exercise : exercises) {
+		Exercise[] exercises = Exercise.loadAllExercises();
+		for (Exercise exercise : exercises) {
 			System.out.println(exercise.toString());
 		}
 	}
@@ -88,8 +87,9 @@ public class ManageExercises {
 		exercise.deleteExercise();
 	}
 	public static void allExercisesNotByUserIdInterface() {
-		Exercise[] notByUser = Exercise.allExercisesNotByUserId(2);
-		for(Exercise exercise : notByUser) {
+		int user_id = Demo.getIntFromConsole();
+		Exercise[] notByUser = Exercise.allExercisesNotByUserId(user_id);
+		for (Exercise exercise : notByUser) {
 			System.out.println(exercise.toString());
 		}
 		
