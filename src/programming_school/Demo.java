@@ -47,7 +47,6 @@ public class Demo {
 //	ADMIN MENU
 	private static void adminInteface() {
 		System.out.println("ADMIN INTERFACE");
-//		int adminMenu = 0;
 		while (true) {
 			System.out.println("1. USER MANAGEMENT");
 			System.out.println("2. GROUP MANAGEMENT");
@@ -59,12 +58,12 @@ public class Demo {
 			int adminMenu = getIntFromConsole();
 			switch (adminMenu) {
 			case 1:
-				int adminUserMenu = 0;
-				while (adminUserMenu!=5) {
+				int adminUserMenu = 5;
+				while (adminUserMenu!=0) {
 					System.out.println("******************************USERS LIST******************************");
 					ManageUsers.loadAllUsersInterface();
 					System.out.println("**********************************************************************");
-					System.out.println("1. ADD USER; 2. EDIT USER; 3. DELETE USER; 4. USERS BY GROUP; 5. EXIT;");
+					System.out.println("1. ADD USER; 2. EDIT USER; 3. DELETE USER; 4. USERS BY GROUP; 0. EXIT;");
 					System.out.print("> ");
 					adminUserMenu = getIntFromConsole();
 					switch (adminUserMenu) {
@@ -80,21 +79,21 @@ public class Demo {
 					case 4:
 						ManageUsers.loadAllbyGroupIdInterface();
 						break;
-					case 5:
+					case 0:
 						break;
 					default:
-						System.out.println("Choose 1,2,3,4 or 5.");
+						System.out.println("Choose 1,2,3,4 or 0.");
 						break;
 					}
 				}
 				break;
 			case 2:
-				int adminGroupMenu = 0;
-				while (adminGroupMenu!=4) {
+				int adminGroupMenu = 4;
+				while (adminGroupMenu!=0) {
 					System.out.println("**********************GROUPS LIST*********************");
 					ManageGroups.loadAllGroupsInterface();
 					System.out.println("******************************************************");
-					System.out.println("1. ADD GROUP; 2. EDIT GROUP; 3. DELETE GROUP; 4. EXIT;");
+					System.out.println("1. ADD GROUP; 2. EDIT GROUP; 3. DELETE GROUP; 0. EXIT;");
 					System.out.print("> ");
 					adminGroupMenu = getIntFromConsole();
 					switch (adminGroupMenu) {
@@ -107,21 +106,21 @@ public class Demo {
 					case 3:
 						ManageGroups.deleteGroupInterface();
 						break;
-					case 4:
+					case 0:
 						break;
 					default:
-						System.out.println("Choose 1,2,3 or 4.");
+						System.out.println("Choose 1,2,3 or 0.");
 						break;
 					}
 				}
 				break;
 			case 3:
-				int adminExerciseMenu = 0;
-				while (adminExerciseMenu!=4) {
+				int adminExerciseMenu = 4;
+				while (adminExerciseMenu!=0) {
 					System.out.println("*************************EXERCISES LIST************************");
 					ManageExercises.loadAllExercisesInterface();
 					System.out.println("***************************************************************");
-					System.out.println("1. ADD EXERCISE; 2. EDIT EXERCISE; 3. DELETE EXERCISE; 4. EXIT;");
+					System.out.println("1. ADD EXERCISE; 2. EDIT EXERCISE; 3. DELETE EXERCISE; 0. EXIT;");
 					System.out.print("> ");
 					adminExerciseMenu = getIntFromConsole();
 					switch (adminExerciseMenu) {
@@ -134,21 +133,21 @@ public class Demo {
 					case 3:
 						ManageExercises.deleteExerciseInterface();
 						break;
-					case 4:
+					case 0:
 						break;
 					default:
-						System.out.println("Choose 1,2,3 or 4.");
+						System.out.println("Choose 1,2,3 or 0.");
 						break;
 					}
 				}
 				break;
 			case 4:
-				int adminSolutionMenu = 0;
-				while (adminSolutionMenu!=7) {
+				int adminSolutionMenu = 7;
+				while (adminSolutionMenu!=0) {
 					System.out.println("*************************************************************SOLUTIONS LIST************************************************************");
 					ManageSolutions.loadAllSolutionsInterface();
 					System.out.println("***************************************************************************************************************************************");
-					System.out.println("1. ADD SOLUTION; 2. EDIT SOLUTION; 3. DELETE SOLUTION; 4. ADD SOLUTION TO USER; 5. SOLUTIONS BY USER; 6. SOLUTIONS BY EXERCISE; 7.EXIT;");
+					System.out.println("1. ADD SOLUTION; 2. EDIT SOLUTION; 3. DELETE SOLUTION; 4. ADD SOLUTION TO USER; 5. SOLUTIONS BY USER; 6. SOLUTIONS BY EXERCISE; 0.EXIT;");
 					System.out.print("> ");
 					adminSolutionMenu = getIntFromConsole();
 					switch (adminSolutionMenu) {
@@ -195,18 +194,18 @@ public class Demo {
 					case 6:
 						ManageSolutions.exerciseSolutionsInterface();
 						break;
-					case 7:
+					case 0:
 						break;
 					default:
-						System.out.println("Choose 1,2,3,4,5 or 6.");
+						System.out.println("Choose 1,2,3,4,5,6 or 0.");
 						break;
 					}
 				}
 				break;
 			case 5:
-				int adminUserExerciseMenu = 0;
-				while (adminUserExerciseMenu!=3) {
-					System.out.println("1. ADD EXERCISE TO USER - CREATE SOLUTION; 2. SOLUTIONS BY USERS; 3. EXIT;");
+				int adminUserExerciseMenu = 3;
+				while (adminUserExerciseMenu!=0) {
+					System.out.println("1. ADD EXERCISE TO USER - CREATE SOLUTION; 2. SOLUTIONS BY USERS; 0. EXIT;");
 					System.out.print("> ");
 					adminUserExerciseMenu = getIntFromConsole();
 					switch (adminUserExerciseMenu) {
@@ -228,10 +227,10 @@ public class Demo {
 					case 2:
 						ManageSolutions.usersSolutionsInterface(0);
 						break;
-					case 3:
+					case 0:
 						break;
 					default:
-						System.out.println("Choose 1,2 or 3.");
+						System.out.println("Choose 1,2 or 0.");
 						break;
 					}
 				}
@@ -244,8 +243,8 @@ public class Demo {
 			}
 		}
 	}
-	
-	private static void userInterface(int user) {														// USER MENU
+//	USER MENU
+	private static void userInterface(int user) {
 		User selectedUser = null;
 		int user_id=user;
 		System.out.println("USER INTERFACE");
@@ -263,10 +262,10 @@ public class Demo {
 			user_id = user;
 			user = 0;
 		}
-		int userMenu = 0;
-		while (userMenu!=3) {
+		int userMenu = 3;
+		while (userMenu!=0) {
 			System.out.println(selectedUser.toString());
-			System.out.println("1. ADD EXERCISE - CREATE SOLUTION; 2. VIEW YOUR SOLUTIONS; 3. EXIT;");
+			System.out.println("1. ADD EXERCISE - CREATE SOLUTION; 2. VIEW YOUR SOLUTIONS; 0. EXIT;");
 			System.out.print("> ");
 			userMenu = getIntFromConsole();
 			switch (userMenu) {
@@ -300,10 +299,10 @@ public class Demo {
 				System.out.println("*******************************************");
 				System.out.println();
 				break;
-			case 3:
+			case 0:
 				break;
 			default:
-				System.out.println("Choose 1,2 or 3.");
+				System.out.println("Choose 1,2 or 0.");
 				break;
 			}
 		}
