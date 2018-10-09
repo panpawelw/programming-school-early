@@ -321,7 +321,7 @@ public class Demo {
 	}
 
 //	get integer from console input
-	public static int getIntFromConsole() {
+	static int getIntFromConsole() {
 		while(!scanner.hasNextInt()) scanner.next();
 		return scanner.nextInt();
 	}

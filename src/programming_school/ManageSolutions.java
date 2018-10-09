@@ -37,9 +37,8 @@ public class ManageSolutions {
 		}
 	}
 
-	public static void loadAllSolutionsInterface() {
-		Solution[] solutions;
-		solutions = Solution.loadAllSolutions();
+	static void loadAllSolutionsInterface() {
+		Solution[] solutions = Solution.loadAllSolutions();
 		for (Solution solution : solutions) {
 			System.out.println(solution.toString());
 		}
@@ -51,14 +50,10 @@ public class ManageSolutions {
 		System.out.print("Enter new solution description: ");
 		String description = scanner.nextLine();
 		System.out.print("Enter new exercise number: ");
-		while (!scanner.hasNextInt())
-			scanner.next();
-		int exercise_id = scanner.nextInt();
+		int exercise_id = Demo.getIntFromConsole();
 		System.out.print("Enter new user number: ");
-		while (!scanner.hasNextInt())
-			scanner.next();
-		int users_id = scanner.nextInt();
-		Solution solution = new Solution(description, exercise_id, users_id );
+		int users_id = Demo.getIntFromConsole();
+		Solution solution = new Solution(description, exercise_id, users_id);
 		solution.saveSolutionToDB();
 	}
 
@@ -66,11 +61,8 @@ public class ManageSolutions {
 		@SuppressWarnings({ "resource" })
 		Scanner scanner = new Scanner(System.in);
 		System.out.print("Enter ID of the solution you want to edit: ");
-		while (!scanner.hasNextInt())
-			scanner.next();
-		int id = scanner.nextInt();
-		Solution solution = new Solution();
-		solution = Solution.loadSolutionById(id);
+		int id = Demo.getIntFromConsole();
+		Solution solution = Solution.loadSolutionById(id);
 		if (solution == null) {
 			return;
 		}
@@ -78,13 +70,9 @@ public class ManageSolutions {
 		System.out.print("Enter new solution description: ");
 		String description = scanner.nextLine();
 		System.out.print("Enter new exercise number: ");
-		while (!scanner.hasNextInt())
-			scanner.next();
-		int exercise_id = scanner.nextInt();
+		int exercise_id = Demo.getIntFromConsole();
 		System.out.print("Enter new user number: ");
-		while (!scanner.hasNextInt())
-			scanner.next();
-		int users_id = scanner.nextInt();
+		int users_id = Demo.getIntFromConsole();
 		solution.setDescription(description);
 		solution.setExercise_id(exercise_id);
 		solution.setUsers_id(users_id);
@@ -95,12 +83,9 @@ public class ManageSolutions {
 		@SuppressWarnings({ "resource" })
 		Scanner scanner = new Scanner(System.in);
 		System.out.print("Enter ID of the solution you want to delete: ");
-		while (!scanner.hasNextInt())
-			scanner.next();
-		int id = scanner.nextInt();
-		Solution solution = new Solution();
-		solution = Solution.loadSolutionById(id);
-		solution.deleteSolution();
+		int id = Demo.getIntFromConsole();
+		Solution solution = Solution.loadSolutionById(id);
+		if(solution!=null) solution.deleteSolution();
 	}
 	
 	public static void usersSolutionsInterface(int users_id) {
@@ -109,9 +94,7 @@ public class ManageSolutions {
 			Scanner scanner = new Scanner(System.in);
 			ManageUsers.loadAllUsersInterface();
 			System.out.print("Enter ID of the user whose solutions you'd like to browse: ");
-			while (!scanner.hasNextInt())
-				scanner.next();
-			users_id = scanner.nextInt();
+			users_id = Demo.getIntFromConsole();
 		}
 		Solution[] usersSolutions;
 		usersSolutions = Solution.loadAllByUserId(users_id);
@@ -125,8 +108,7 @@ public class ManageSolutions {
 		Scanner scanner = new Scanner(System.in);
 		ManageExercises.loadAllExercisesInterface();
 		System.out.print("Enter ID of the exercise which solutions of you'd like to browse: ");
-		while (!scanner.hasNextInt()) scanner.next();
-		int exercise_id = scanner.nextInt();
+		int exercise_id = Demo.getIntFromConsole();
 		Solution[] exerciseSolutions;
 		exerciseSolutions = Solution.loadAllByExerciseId(exercise_id);
 		for (Solution solution : exerciseSolutions) {
