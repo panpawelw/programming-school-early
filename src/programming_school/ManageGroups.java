@@ -1,17 +1,12 @@
 package programming_school;
 
-import java.util.Scanner;
-
 public class ManageGroups {
 
 	public static void main(String[] args) {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
 		while (true) {
 			System.out.println("***GROUPS LIST***");
 			loadAllGroupsInterface();
-			System.out.print("Enter command:");
-			String command = scanner.nextLine();
+			String command = Demo.getTextFromConsole("Enter command:");
 			switch (command) {
 			case "quit":
 				System.out.println("Bye!");
@@ -31,18 +26,15 @@ public class ManageGroups {
 		}
 	}
 
-	public static void loadAllGroupsInterface() {
+	static void loadAllGroupsInterface() {
 		Group[] groups = Group.loadAllGroups();
 		for (Group group : groups) {
 			System.out.println(group.toString());
 		}
 	}
 
-	public static void addGroupInterface() {
-		@SuppressWarnings({ "resource" })
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter new group name: ");
-		String name = scanner.nextLine();
+	static void addGroupInterface() {
+		String name = Demo.getTextFromConsole("Enter new group name:");
 		Group group = new Group(name);
 		group.saveGroupToDB();
 	}
@@ -58,8 +50,7 @@ public class ManageGroups {
 		if(group==null) {
 			return;
 		}
-		System.out.print("Enter new group name: ");
-		String name = scanner.nextLine();
+		String name = Demo.getTextFromConsole("Enter new group name:");
 		group.setName(name);
 		group.saveGroupToDB();
 	}

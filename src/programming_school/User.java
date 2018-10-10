@@ -64,7 +64,7 @@ public class User {
 		this.usergroup_id = person_group_id;
 	}
 
-	public void saveUserToDB() {
+	void saveUserToDB() {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -103,7 +103,7 @@ public class User {
 		}
 	}
 
-	static public User loadUserById(int id) {
+	static User loadUserById(int id) {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -146,14 +146,13 @@ public class User {
 		}
 	}
 
-	public static User[] loadAllbyGroupId(int usergroup_id) {
+	static User[] loadAllbyGroupId(int usergroup_id) {
 		return loadUsersBy(false, usergroup_id);
 	}
 	
 	
 	@Override
 	public String toString() {
-		String userToString = this.id + ": " + this.username + " email: " + this.email + " group: " + this.usergroup_id;
-		return userToString;
+		return this.id + ": " + this.username + " email: " + this.email + " group: " + this.usergroup_id;
 	}
 }

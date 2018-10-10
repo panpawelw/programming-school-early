@@ -1,17 +1,12 @@
 package programming_school;
 
-import java.util.Scanner;
-
 public class ManageExercises {
 
 	public static void main(String[] args) {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
 		while (true) {
 			System.out.println("***EXERCISES LIST***");
 			loadAllExercisesInterface();
-			System.out.print("Enter command:");
-			String command = scanner.nextLine();
+			String command = Demo.getTextFromConsole("Enter command:");
 			switch (command) {
 			case "quit":
 				System.out.println("Bye!");
@@ -34,20 +29,16 @@ public class ManageExercises {
 		}
 	}
 
-	public static void loadAllExercisesInterface() {
+	static void loadAllExercisesInterface() {
 		Exercise[] exercises = Exercise.loadAllExercises();
 		for (Exercise exercise : exercises) {
 			System.out.println(exercise.toString());
 		}
 	}
 
-	public static void addExerciseInterface() {
-		@SuppressWarnings({ "resource" })
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter new exercise title: ");
-		String title = scanner.nextLine();
-		System.out.print("Enter new exercise description: ");
-		String description = scanner.nextLine();
+	static void addExerciseInterface() {
+		String title = Demo.getTextFromConsole("Enter new exercise title:");
+		String description = Demo.getTextFromConsole("Enter new exercise description:");
 		Exercise exercise = new Exercise(title, description);
 		exercise.saveExerciseToDB();
 	}
@@ -63,11 +54,8 @@ public class ManageExercises {
 		if(exercise==null) {
 			return;
 		}
-		System.out.print("Enter new exercise title: ");
-		scanner.nextLine();
-		String title = scanner.nextLine();
-		System.out.print("Enter new exercise description: ");
-		String description = scanner.nextLine();
+		String title = Demo.getTextFromConsole("Enter new exercise title:");
+		String description = Demo.getTextFromConsole("Enter new exercise description:");
 		exercise.setTitle(title);
 		exercise.setDescription(description);
 		exercise.saveExerciseToDB();
@@ -86,8 +74,9 @@ public class ManageExercises {
 		}
 		exercise.deleteExercise();
 	}
-	public static void allExercisesNotByUserIdInterface() {
-		int user_id = Demo.getIntFromConsole();
+
+	private static void allExercisesNotByUserIdInterface() {
+		int user_id = Demo.getIntFromConsole("Enter ID of the user whose exercises without solutions you want to see:");
 		Exercise[] notByUser = Exercise.allExercisesNotByUserId(user_id);
 		for (Exercise exercise : notByUser) {
 			System.out.println(exercise.toString());

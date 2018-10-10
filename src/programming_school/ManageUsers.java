@@ -1,17 +1,12 @@
 package programming_school;
 
-import java.util.Scanner;
-
 public class ManageUsers {
 
 	public static void main(String[] args) {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
 		while (true) {
 			System.out.println("***USERS LIST***");
 			loadAllUsersInterface();
-			System.out.print("Enter command:");
-			String command = scanner.nextLine();
+			String command = Demo.getTextFromConsole("Enter command:");
 			switch (command) {
 			case "quit":
 				return;
@@ -41,19 +36,12 @@ public class ManageUsers {
 		}
 	}
 
-	public static void addUserInterface() {
-		@SuppressWarnings({ "resource" })
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter new user name: ");
-		String name = scanner.nextLine();
-		System.out.print("Enter new user email: ");
-		String email = scanner.nextLine();
-		System.out.print("Enter new user password: ");
-		String password = scanner.nextLine();
-		System.out.print("Enter new user group number: ");
-		while(!scanner.hasNextInt()) scanner.next();
-		int person_group_id = scanner.nextInt();
-		User user = new User(name, email, password, person_group_id);
+	static void addUserInterface() {
+		String name = Demo.getTextFromConsole("Enter new user name:");
+		String email = Demo.getTextFromConsole("Enter new user email:");
+		String password = Demo.getTextFromConsole("Enter new user password: ");
+		int usergroup_id = Demo.getIntFromConsole("Enter new user group number:");
+		User user = new User(name, email, password, usergroup_id);
 		user.saveUserToDB();
 	}
 
@@ -67,16 +55,10 @@ public class ManageUsers {
 		if (user == null) {
 			return;
 		}
-		scanner.nextLine();
-		System.out.print("Enter new user name: ");
-		String name = scanner.nextLine();
-		System.out.print("Enter new user email: ");
-		String email = scanner.nextLine();
-		System.out.print("Enter new user password: ");
-		String password = scanner.nextLine();
-		System.out.print("Enter new user group number: ");
-		while(!scanner.hasNextInt()) scanner.next();
-		int person_group_id = scanner.nextInt();
+		String name = Demo.getTextFromConsole("Enter new user name:");
+		String email = Demo.getTextFromConsole("Enter new user email:");
+		String password = Demo.getTextFromConsole("Enter new user password:");
+		int usergroup_id = Demo.getIntFromConsole("Enter new user group number:");
 		user.setUsername(name);
 		user.setEmail(email);
 		user.setPassword(password);
@@ -91,7 +73,7 @@ public class ManageUsers {
 		while(!scanner.hasNextInt()) scanner.next();
 		int id = scanner.nextInt();
 		User user = User.loadUserById(id);
-		user.deleteUser();
+		if(user!=null) user.deleteUser();
 	}
 	
 	public static void loadAllbyGroupIdInterface() {

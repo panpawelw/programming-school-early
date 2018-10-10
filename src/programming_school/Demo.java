@@ -24,9 +24,7 @@ public class Demo {
 			System.out.println("1. ADMIN INTERFACE");
 			System.out.println("2. USER INTERFACE");
 			System.out.println("0. EXIT");
-			System.out.println();
-			System.out.print("> ");
-			int mainMenu = getIntFromConsole();
+			int mainMenu = getIntFromConsole("");
 			switch (mainMenu) {
 			case 1:
 				adminInteface();
@@ -54,8 +52,7 @@ public class Demo {
 			System.out.println("4. SOLUTION MANAGEMENT");
 			System.out.println("5. USERS AND EXERCISES");
 			System.out.println("0. EXIT");
-			System.out.print("> ");
-			int adminMenu = getIntFromConsole();
+			int adminMenu = getIntFromConsole("");
 			switch (adminMenu) {
 			case 1:
 				int adminUserMenu = 5;
@@ -64,8 +61,7 @@ public class Demo {
 					ManageUsers.loadAllUsersInterface();
 					System.out.println("**********************************************************************");
 					System.out.println("1. ADD USER; 2. EDIT USER; 3. DELETE USER; 4. USERS BY GROUP; 0. EXIT;");
-					System.out.print("> ");
-					adminUserMenu = getIntFromConsole();
+					adminUserMenu = getIntFromConsole("");
 					switch (adminUserMenu) {
 					case 1:
 						ManageUsers.addUserInterface();
@@ -77,7 +73,7 @@ public class Demo {
 						ManageUsers.deleteUserInterface();
 						break;
 					case 4:
-						ManageUsers.loadAllbyGroupIdInterface();
+						ManageUsers.loadAllByGroupIdInterface();
 						break;
 					case 0:
 						break;
@@ -94,8 +90,7 @@ public class Demo {
 					ManageGroups.loadAllGroupsInterface();
 					System.out.println("******************************************************");
 					System.out.println("1. ADD GROUP; 2. EDIT GROUP; 3. DELETE GROUP; 0. EXIT;");
-					System.out.print("> ");
-					adminGroupMenu = getIntFromConsole();
+					adminGroupMenu = getIntFromConsole("");
 					switch (adminGroupMenu) {
 					case 1:
 						ManageGroups.addGroupInterface();
@@ -121,8 +116,7 @@ public class Demo {
 					ManageExercises.loadAllExercisesInterface();
 					System.out.println("***************************************************************");
 					System.out.println("1. ADD EXERCISE; 2. EDIT EXERCISE; 3. DELETE EXERCISE; 0. EXIT;");
-					System.out.print("> ");
-					adminExerciseMenu = getIntFromConsole();
+					adminExerciseMenu = getIntFromConsole("");
 					switch (adminExerciseMenu) {
 					case 1:
 						ManageExercises.addExerciseInterface();
@@ -148,8 +142,7 @@ public class Demo {
 					ManageSolutions.loadAllSolutionsInterface();
 					System.out.println("***************************************************************************************************************************************");
 					System.out.println("1. ADD SOLUTION; 2. EDIT SOLUTION; 3. DELETE SOLUTION; 4. ADD SOLUTION TO USER; 5. SOLUTIONS BY USER; 6. SOLUTIONS BY EXERCISE; 0.EXIT;");
-					System.out.print("> ");
-					adminSolutionMenu = getIntFromConsole();
+					adminSolutionMenu = getIntFromConsole("");
 					switch (adminSolutionMenu) {
 					case 1:
 						ManageSolutions.addSolutionInterface();
@@ -162,19 +155,14 @@ public class Demo {
 						break;
 					case 4:
 						ManageUsers.loadAllUsersInterface();
-						System.out.println("Select user:");
-						System.out.print("> ");
-						int user_id = getIntFromConsole();
+						int user_id = getIntFromConsole("Select user:");
 						System.out.println("Exercises you don't have solutions for yet:");
 						Exercise[] notByUser = Exercise.allExercisesNotByUserId(user_id);
 						for(Exercise exercise : notByUser) {
 							System.out.println(exercise.toString());
 						}
-						System.out.println("Select exercise:");
-						System.out.print("> ");
-						int exercise_id = getIntFromConsole();
-						Solution[] usersSolutions;
-						usersSolutions = Solution.loadAllByUserId(user_id);
+						int exercise_id = getIntFromConsole("Select exercise:");
+						Solution[] usersSolutions = Solution.loadAllByUserId(user_id);
 						boolean exerciseExists = false;
 						for(Solution solution : usersSolutions) {
 							if(solution.getExercise_id()==exercise_id) {
@@ -206,22 +194,14 @@ public class Demo {
 				int adminUserExerciseMenu = 3;
 				while (adminUserExerciseMenu!=0) {
 					System.out.println("1. ADD EXERCISE TO USER - CREATE SOLUTION; 2. SOLUTIONS BY USERS; 0. EXIT;");
-					System.out.print("> ");
-					adminUserExerciseMenu = getIntFromConsole();
+					adminUserExerciseMenu = getIntFromConsole("");
 					switch (adminUserExerciseMenu) {
 					case 1:
 						ManageUsers.loadAllUsersInterface();
-						System.out.println("Select user:");
-						System.out.print("> ");
-						while(!scanner.hasNextInt()) scanner.next();
-						int user_id = scanner.nextInt();
+						int user_id = getIntFromConsole("Select user:");
 						ManageExercises.loadAllExercisesInterface();
-						System.out.println("Select exercise:");
-						System.out.print("> ");
-						while(!scanner.hasNextInt()) scanner.next();
-						int exercise_id = scanner.nextInt();
-						String description = null;
-						Solution solution = new Solution(description, exercise_id, user_id);
+						int exercise_id = getIntFromConsole("Select exercise:");
+						Solution solution = new Solution(null, exercise_id, user_id);
 						solution.saveSolutionToDB();
 						break;
 					case 2:
@@ -251,9 +231,7 @@ public class Demo {
 		while(selectedUser==null) {
 			if(user==0) {
 				ManageUsers.loadAllUsersInterface();
-				System.out.println("Select user (0 to quit):");
-				System.out.print("> ");
-				user = getIntFromConsole();
+				user = getIntFromConsole("Select user (0 to quit):");
 				if (user==0) { return; }
 			}else {
 				System.out.println("User selected: " + user);
@@ -266,8 +244,7 @@ public class Demo {
 		while (userMenu!=0) {
 			System.out.println(selectedUser.toString());
 			System.out.println("1. ADD EXERCISE - CREATE SOLUTION; 2. VIEW YOUR SOLUTIONS; 0. EXIT;");
-			System.out.print("> ");
-			userMenu = getIntFromConsole();
+			userMenu = getIntFromConsole("");
 			switch (userMenu) {
 			case 1:
 				System.out.println("Exercises you don't have solutions for yet:");
@@ -275,10 +252,7 @@ public class Demo {
 				for(Exercise exercise : notByUser) {
 					System.out.println(exercise.toString());
 				}
-				System.out.println("Select exercise:");
-				System.out.print("> ");
-				while(!scanner.hasNextInt()) scanner.next();
-				int exercise_id = scanner.nextInt();
+				int exercise_id = getIntFromConsole("Select exercise:");
 				boolean exerciseExists = false;
 				Solution[] usersSolutions;
 				usersSolutions = Solution.loadAllByUserId(user_id);
@@ -309,20 +283,26 @@ public class Demo {
 	}
 
 	private static void getNewSolutionName(int exercise_id, int user_id) {
-		System.out.println("Enter solution description:");
-		System.out.print("> ");
-		scanner.next();
-		String description = scanner.nextLine();
-		System.out.println(description);
+		String description = getTextFromConsole("Enter solution description:");
 		Solution solution = new Solution(description, exercise_id, user_id);
-		System.out.println(solution.toString());
 		solution.saveSolutionToDB();
 		solution.saveSolutionToDB();
 	}
 
-//	get integer from console input
-	static int getIntFromConsole() {
+//	display message and get integer from console input
+	static int getIntFromConsole(String message) {
+		System.out.println(message);
+		System.out.print("> ");
 		while(!scanner.hasNextInt()) scanner.next();
-		return scanner.nextInt();
+		int result = scanner.nextInt();
+		scanner.nextLine();
+		return result;
+	}
+
+//	display message and get text from console input
+	static String getTextFromConsole(String message){
+		System.out.println(message);
+		System.out.print("> ");
+		return scanner.nextLine();
 	}
 }

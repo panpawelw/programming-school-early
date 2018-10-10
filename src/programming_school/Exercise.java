@@ -75,7 +75,7 @@ public class Exercise {
 		}
 	}
 
-	static public Exercise loadExerciseById(int id) {
+	static Exercise loadExerciseById(int id) {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -205,7 +205,6 @@ public class Exercise {
 
 	@Override
 	public String toString() {
-		String exerciseToString = "id: " + this.id + " title: " + this.title + " description: " + this.description;
-		return exerciseToString;
+		return "id: " + this.id + " title: " + this.title + " description: " + this.description;
 	}
 }

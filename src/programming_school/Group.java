@@ -35,7 +35,7 @@ public class Group {
 		return id;
 	}
 
-	public void saveGroupToDB() {
+	void saveGroupToDB() {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -76,8 +76,7 @@ public class Group {
 				ps.setInt(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
-						Group loadedGroup = loadGroup(rs);
-						return loadedGroup;
+						return loadGroup(rs);
 					}
 				}
 			}
@@ -93,7 +92,7 @@ public class Group {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
-		ArrayList<Group> groups = new ArrayList<Group>();
+		ArrayList<Group> groups = new ArrayList<>();
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
 			String sql = "SELECT * FROM usergroup;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -115,7 +114,7 @@ public class Group {
 		return gArray;
 	}
 
-	public void deleteGroup() {
+	void deleteGroup() {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -141,7 +140,6 @@ public class Group {
 
 	@Override
 	public String toString() {
-		String groupToStr = "id: " + this.id + " name: " + this.name;
-		return groupToStr;
+		return "id: " + this.id + " name: " + this.name;
 	}
 }

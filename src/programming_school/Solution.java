@@ -148,7 +148,7 @@ public class Solution {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
-		ArrayList<Solution> solutions = new ArrayList<Solution>();
+		ArrayList<Solution> solutions = new ArrayList<>();
 		String sql = "SELECT * FROM solution;";
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -167,7 +167,7 @@ public class Solution {
 		return sArray;
 	}
 
-	public void deleteSolution() {
+	void deleteSolution() {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -184,7 +184,7 @@ public class Solution {
 		}
 	}
 
-	static public Solution[] loadAllByUserId(int user_id) {
+	static Solution[] loadAllByUserId(int user_id) {
 		String sql = "SELECT * FROM solution WHERE user_id=?;";
 		return loadSolutionsBy(sql, user_id);
 	}
@@ -229,7 +229,6 @@ public class Solution {
 
 	@Override
 	public String toString() {
-		String solutionToString = this.id + ": " + this.description + " created: " + this.created + " updated: " + this.updated + " exercise: " + this.exercise_id + " user: " + this.user_id;
-		return solutionToString;
+		return this.id + ": " + this.description + " created: " + this.created + " updated: " + this.updated + " exercise: " + this.exercise_id + " user: " + this.user_id;
 	}
 }
