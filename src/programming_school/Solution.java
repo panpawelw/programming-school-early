@@ -8,35 +8,35 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 public class Solution {
-
 	private int id;
 	private Timestamp created;
 	private Timestamp updated;
 	private String description;
 	private int exercise_id;
-	private int users_id;
-	
-	public Solution() {};
-	
-	public Solution(String description, int exercise_id, int users_id) {
+	private int user_id;
+
+	public Solution() {
+	}
+
+	public Solution(String description, int exercise_id, int user_id) {
 		this.description = description;
 		this.exercise_id = exercise_id;
 		this.user_id = user_id;
 	}
-	
-	public Solution(Timestamp created, Timestamp updated, String description, int exercise_id, int users_id) {
+
+	public Solution(Timestamp created, Timestamp updated, String description, int exercise_id, int user_id) {
 		this.created = created;
 		this.updated = updated;
 		this.description = description;
 		this.exercise_id = exercise_id;
-		this.users_id = users_id;
-		
+		this.user_id = user_id;
 	}
-	
+
 	public Timestamp getCreated() {
 		return created;
 	}
@@ -80,15 +80,15 @@ public class Solution {
 	public int getId() {
 		return id;
 	}
-	
-	public void saveSolutionToDB() {
+
+	void saveSolutionToDB() {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
 			if (this.id == 0) {
-				String sql = "INSERT INTO solution(created, updated, description, exercise_id, users_id) VALUES (?, ?, ?, ?, ?);";
-				String generatedColumns[] = { " ID " };
+				String sql = "INSERT INTO solution(created, updated, description, exercise_id, user_id) VALUES (?, ?, ?, ?, ?);";
+				String generatedColumns[] = {" ID "};
 				Date date = new Date();
 				java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
 				try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
@@ -121,8 +121,8 @@ public class Solution {
 			e.printStackTrace();
 		}
 	}
-	
-	static public Solution loadSolutionById(int id) {
+
+	static Solution loadSolutionById(int id) {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -143,29 +143,6 @@ public class Solution {
 		System.out.println("No such solution!");
 		return null;
 	}
-	
-	static public Solution[] loadAllSolutions() {
-		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
-		String user = "root";
-		String pswd = "mojSQL";
-		ArrayList<Solution> solutions = new ArrayList<>();
-		String sql = "SELECT * FROM solution;";
-		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
-			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				try (ResultSet rs = ps.executeQuery()) {
-					while (rs.next()) {
-						solutions.add(loadSolution(rs));
-					}
-				}
-			}
-		} catch (SQLException e) {
-			System.out.println("Database error!");
-			e.printStackTrace();
-		}
-		Solution[] sArray = new Solution[solutions.size()];
-		sArray = solutions.toArray(sArray);
-		return sArray;
-	}
 
 	void deleteSolution() {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
@@ -176,7 +153,7 @@ public class Solution {
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, this.id);
 				ps.executeUpdate();
-				this.id=0;
+				this.id = 0;
 			}
 		} catch (SQLException e) {
 			System.out.println("Database error!");
@@ -184,23 +161,29 @@ public class Solution {
 		}
 	}
 
-	static Solution[] loadAllByUserId(int user_id) {
-		String sql = "SELECT * FROM solution WHERE user_id=?;";
-		return loadSolutionsBy(sql, user_id);
-	}
-	static public Solution[] loadAllByExerciseId(int exercise_id) {
-		String sql = "SELECT * FROM solution WHERE exercise_id=? ORDER BY created;";
-		return loadSolutionsBy(sql, exercise_id);
+	static Solution[] loadAllSolutions() {
+		String sql = "SELECT * FROM solution;";
+		return loadSolutionsBy(true, sql, 0);
 	}
 
-	static private Solution[] loadSolutionsBy(String sql, int param) {
+	static Solution[] loadAllByUserId(int user_id) {
+		String sql = "SELECT * FROM solution WHERE user_id=?;";
+		return loadSolutionsBy(false, sql, user_id);
+	}
+
+	static Solution[] loadAllByExerciseId(int exercise_id) {
+		String sql = "SELECT * FROM solution WHERE exercise_id=? ORDER BY created;";
+		return loadSolutionsBy(false, sql, exercise_id);
+	}
+
+	private static Solution[] loadSolutionsBy(boolean loadAll, String sql, int param) {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
-		ArrayList<Solution> solutionsByParamArrayList = new ArrayList<>();
+		List<Solution> solutionsByParamArrayList = new ArrayList<>();
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				ps.setInt(1, param);
+				if (!loadAll) ps.setInt(1, param);
 				try (ResultSet rs = ps.executeQuery()) {
 					while (rs.next()) {
 						solutionsByParamArrayList.add(loadSolution(rs));
@@ -216,7 +199,7 @@ public class Solution {
 		return solutionsByParamArray;
 	}
 
-	static private Solution loadSolution(ResultSet rs) throws SQLException{
+	private static Solution loadSolution(ResultSet rs) throws SQLException {
 		Solution loadedSolution = new Solution();
 		loadedSolution.id = rs.getInt("id");
 		loadedSolution.created = rs.getTimestamp("created");

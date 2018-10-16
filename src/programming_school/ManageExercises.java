@@ -8,23 +8,23 @@ public class ManageExercises {
 			loadAllExercisesInterface();
 			String command = Demo.getTextFromConsole("Enter command:");
 			switch (command) {
-			case "quit":
-				System.out.println("Bye!");
-				return;
-			case "add":
-				addExerciseInterface();
-				break;
-			case "edit":
-				editExerciseInterface();
-				break;
-			case "delete":
-				deleteExerciseInterface();
-				break;
-			case "notuser":
-				allExercisesNotByUserIdInterface();
-				break;
-			default:
-				System.out.println("Unknown command!");
+				case "quit":
+					System.out.println("Bye!");
+					return;
+				case "add":
+					addExerciseInterface();
+					break;
+				case "edit":
+					editExerciseInterface();
+					break;
+				case "delete":
+					deleteExerciseInterface();
+					break;
+				case "notuser":
+					allExercisesNotByUserIdInterface();
+					break;
+				default:
+					System.out.println("Unknown command!");
 			}
 		}
 	}
@@ -43,15 +43,10 @@ public class ManageExercises {
 		exercise.saveExerciseToDB();
 	}
 
-	public static void editExerciseInterface() {
-		@SuppressWarnings({ "resource" })
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter ID of the exercise you want to edit: ");
-		while(!scanner.hasNextInt()) scanner.next();
-		int id = scanner.nextInt();
-		Exercise exercise = new Exercise();
-		exercise = Exercise.loadExerciseById(id);
-		if(exercise==null) {
+	static void editExerciseInterface() {
+		int id = Demo.getIntFromConsole("Enter ID of the exercise you want to edit:");
+		Exercise exercise = Exercise.loadExerciseById(id);
+		if (exercise == null) {
 			return;
 		}
 		String title = Demo.getTextFromConsole("Enter new exercise title:");
@@ -61,15 +56,10 @@ public class ManageExercises {
 		exercise.saveExerciseToDB();
 	}
 
-	public static void deleteExerciseInterface() {
-		@SuppressWarnings({ "resource" })
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter ID of the exercise you want to delete: ");
-		while(!scanner.hasNextInt()) scanner.next();
-		int id = scanner.nextInt();
-		Exercise exercise = new Exercise();
-		exercise = Exercise.loadExerciseById(id);
-		if(exercise==null) {
+	static void deleteExerciseInterface() {
+		int id = Demo.getIntFromConsole("Enter ID of the exercise you want to delete:");
+		Exercise exercise = Exercise.loadExerciseById(id);
+		if (exercise == null) {
 			return;
 		}
 		exercise.deleteExercise();
@@ -81,6 +71,5 @@ public class ManageExercises {
 		for (Exercise exercise : notByUser) {
 			System.out.println(exercise.toString());
 		}
-		
 	}
 }

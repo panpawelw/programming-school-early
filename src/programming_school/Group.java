@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Group {
 
@@ -13,25 +14,21 @@ public class Group {
 	private String name;
 
 	public Group() {
-	};
+	}
 
 	public Group(String name) {
-
 		this.name = name;
 	}
 
 	public String getName() {
-
 		return name;
 	}
 
 	public void setName(String name) {
-
 		this.name = name;
 	}
 
 	public int getId() {
-
 		return id;
 	}
 
@@ -41,8 +38,8 @@ public class Group {
 		String pswd = "mojSQL";
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
 			if (this.id == 0) {
-				String sql = "INSERT INTO user_group (name) VALUES (?)";
-				String generatedColumns[] = { " ID " };
+				String sql = "INSERT INTO usergroup (name) VALUES (?)";
+				String generatedColumns[] = {" ID "};
 				try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
 					ps.setString(1, this.name);
 					ps.executeUpdate();
@@ -65,8 +62,8 @@ public class Group {
 			e.printStackTrace();
 		}
 	}
-	
-	static public Group loadGroupById(int id) {
+
+	static Group loadGroupById(int id) {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -87,21 +84,18 @@ public class Group {
 		System.out.println("No such group!");
 		return null;
 	}
-	
-	static public Group[] loadAllGroups() {
+
+	static Group[] loadAllGroups() {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
-		ArrayList<Group> groups = new ArrayList<>();
+		List<Group> groups = new ArrayList<>();
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
 			String sql = "SELECT * FROM usergroup;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				try (ResultSet rs = ps.executeQuery()) {
-					while(rs.next()) {
-						Group loadedGroup = new Group();
-						loadedGroup.id = rs.getInt("id");
-						loadedGroup.name = rs.getString("name");
-						groups.add(loadedGroup);
+					while (rs.next()) {
+						groups.add(loadGroup(rs));
 					}
 				}
 			}
@@ -123,7 +117,7 @@ public class Group {
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, this.id);
 				ps.executeUpdate();
-				this.id=0;
+				this.id = 0;
 			}
 		} catch (SQLException e) {
 			System.out.println("Database error!");

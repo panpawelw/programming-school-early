@@ -8,7 +8,7 @@ public class Demo {
 	
 	public static void main(String[] args) {
 		if(args.length>0) {
-			int user=0;
+			int user;
 			try {
 				user = Integer.parseInt(args[0]);
 			}catch(NumberFormatException e) {

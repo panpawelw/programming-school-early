@@ -8,30 +8,29 @@ public class ManageUsers {
 			loadAllUsersInterface();
 			String command = Demo.getTextFromConsole("Enter command:");
 			switch (command) {
-			case "quit":
-				return;
-			case "add":
-				addUserInterface();
-				break;
-			case "edit":
-				editUserInterface();
-				break;
-			case "delete":
-				deleteUserInterface();
-				break;
-			case "group":
-				loadAllbyGroupIdInterface();
-				break;
-			default:
-				System.out.println("Unknown command!");
+				case "quit":
+					return;
+				case "add":
+					addUserInterface();
+					break;
+				case "edit":
+					editUserInterface();
+					break;
+				case "delete":
+					deleteUserInterface();
+					break;
+				case "group":
+					loadAllByGroupIdInterface();
+					break;
+				default:
+					System.out.println("Unknown command!");
 			}
 		}
 	}
 
-	public static void loadAllUsersInterface() {
-		User[] users;
-		users = User.loadAllUsers();
-		for(User user : users) {
+	static void loadAllUsersInterface() {
+		User[] users = User.loadAllUsers();
+		for (User user : users) {
 			System.out.println(user.toString());
 		}
 	}
@@ -45,12 +44,8 @@ public class ManageUsers {
 		user.saveUserToDB();
 	}
 
-	public static void editUserInterface() {
-		@SuppressWarnings({ "resource" })
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter ID of the user you want to edit: ");
-		while(!scanner.hasNextInt()) scanner.next();
-		int id = scanner.nextInt();
+	static void editUserInterface() {
+		int id = Demo.getIntFromConsole("Enter ID of the user you want to edit:");
 		User user = User.loadUserById(id);
 		if (user == null) {
 			return;
@@ -66,25 +61,17 @@ public class ManageUsers {
 		user.saveUserToDB();
 	}
 
-	public static void deleteUserInterface() {
-		@SuppressWarnings({ "resource" })
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter ID of the user you want to delete: ");
-		while(!scanner.hasNextInt()) scanner.next();
-		int id = scanner.nextInt();
+	static void deleteUserInterface() {
+		int id = Demo.getIntFromConsole("Enter ID of the user you want to delete:");
 		User user = User.loadUserById(id);
 		if(user!=null) user.deleteUser();
 	}
-	
-	public static void loadAllbyGroupIdInterface() {
-		@SuppressWarnings({ "resource" })
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter ID of the group of users you want to display: ");
-		while(!scanner.hasNextInt()) scanner.next();
-		int person_group_id = scanner.nextInt();
-		User[] groupUsers;
-		groupUsers = User.loadAllbyGroupId(person_group_id);
-		for(User user : groupUsers) {
+
+	static void loadAllByGroupIdInterface() {
+		int usergroup_id = Demo.getIntFromConsole("Enter ID of the group of users you want to display:");
+		User[] groupUsers = User.loadAllbyGroupId(usergroup_id);
+		if(groupUsers.length==0) System.out.println("None");
+		for (User user : groupUsers) {
 			System.out.println(user.toString());
 		}
 	}

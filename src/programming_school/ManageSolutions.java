@@ -3,33 +3,30 @@ package programming_school;
 public class ManageSolutions {
 
 	public static void main(String[] args) {
-
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
 		while (true) {
 			System.out.println("***SOLUTIONS LIST***");
 			loadAllSolutionsInterface();
 			String command = Demo.getTextFromConsole("Enter command:");
 			switch (command) {
-			case "quit":
-				return;
-			case "add":
-				addSolutionInterface();
-				break;
-			case "edit":
-				editSolutionInterface();
-				break;
-			case "delete":
-				deleteSolutionInterface();
-				break;
-			case "user":
-				usersSolutionsInterface(0);
-				break;
-			case "exercise":
-				exerciseSolutionsInterface();
-				break;
-			default:
-				System.out.println("Unknown command!");
+				case "quit":
+					return;
+				case "add":
+					addSolutionInterface();
+					break;
+				case "edit":
+					editSolutionInterface();
+					break;
+				case "delete":
+					deleteSolutionInterface();
+					break;
+				case "user":
+					usersSolutionsInterface(0);
+					break;
+				case "exercise":
+					exerciseSolutionsInterface();
+					break;
+				default:
+					System.out.println("Unknown command!");
 			}
 		}
 	}
@@ -64,19 +61,14 @@ public class ManageSolutions {
 		solution.saveSolutionToDB();
 	}
 
-	public static void deleteSolutionInterface() {
-		@SuppressWarnings({ "resource" })
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter ID of the solution you want to delete: ");
-		int id = Demo.getIntFromConsole();
+	static void deleteSolutionInterface() {
+		int id = Demo.getIntFromConsole("Enter ID of the solution you want to delete:");
 		Solution solution = Solution.loadSolutionById(id);
 		if(solution!=null) solution.deleteSolution();
 	}
-	
-	public static void usersSolutionsInterface(int users_id) {
-		if(users_id==0) {
-			@SuppressWarnings({ "resource" })
-			Scanner scanner = new Scanner(System.in);
+
+	static void usersSolutionsInterface(int users_id) {
+		if (users_id == 0) {
 			ManageUsers.loadAllUsersInterface();
 			users_id = Demo.getIntFromConsole("Enter ID of the user whose solutions you'd like to browse:");
 		}
@@ -86,10 +78,8 @@ public class ManageSolutions {
 			System.out.println(solution.toString());
 		}
 	}
-	
-	public static void exerciseSolutionsInterface() {
-		@SuppressWarnings({ "resource" })
-		Scanner scanner = new Scanner(System.in);
+
+	static void exerciseSolutionsInterface() {
 		ManageExercises.loadAllExercisesInterface();
 		int exercise_id = Demo.getIntFromConsole("Enter ID of the exercise which solutions of you'd like to browse:");
 		Solution[] exerciseSolutions;

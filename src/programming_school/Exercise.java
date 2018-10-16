@@ -6,22 +6,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Exercise {
 
 	private int id;
 	private String title;
 	private String description;
-	
-	public Exercise() {};
-	
+
+	public Exercise() {
+	}
+
 	public Exercise(String title, String description) {
-		
 		this.title = title;
 		this.description = description;
-		
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -41,15 +41,15 @@ public class Exercise {
 	public int getId() {
 		return id;
 	}
-	
-	public void saveExerciseToDB() {
+
+	void saveExerciseToDB() {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
 			if (this.id == 0) {
 				String sql = "INSERT INTO exercise (title, description) VALUES (?, ?)";
-				String generatedColumns[] = { " ID " };
+				String generatedColumns[] = {" ID "};
 				try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
 					ps.setString(1, this.title);
 					ps.setString(2, this.description);
@@ -96,35 +96,8 @@ public class Exercise {
 		System.out.println("No such exercise!");
 		return null;
 	}
-	
-	static public Exercise[] loadAllExercises() {
-		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
-		String user = "root";
-		String pswd = "mojSQL";
-		ArrayList<Exercise> exercises = new ArrayList<Exercise>();
-		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
-			String sql = "SELECT * FROM exercise;";
-			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				try (ResultSet rs = ps.executeQuery()) {
-					while(rs.next()) {
-						Exercise loadedExercise = new Exercise();
-						loadedExercise.id = rs.getInt("id");
-						loadedExercise.title = rs.getString("title");
-						loadedExercise.description = rs.getString("description");
-						exercises.add(loadedExercise);
-					}
-				}
-			}
-		} catch (SQLException e) {
-			System.out.println("Database error!");
-			e.printStackTrace();
-		}
-		Exercise eArray[] = new Exercise[exercises.size()];
-		eArray = exercises.toArray(eArray);
-		return eArray;
-	}
-	
-	public void deleteExercise() {
+
+	void deleteExercise() {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -133,40 +106,20 @@ public class Exercise {
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, this.id);
 				ps.executeUpdate();
-				this.id=0;
+				this.id = 0;
 			}
 		} catch (SQLException e) {
 			System.out.println("Database error!");
 			e.printStackTrace();
 		}
 	}
-	
-	static public Exercise[] allExercisesNotByUserId(int users_id) {
-		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
-		String user = "root";
-		String pswd = "mojSQL";
-		ArrayList<Exercise> exercises = new ArrayList<Exercise>();
-		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
-			String sql = "SELECT * FROM exercise WHERE exercise.id NOT IN (SELECT exercise.id FROM exercise JOIN solution ON exercise.id = solution.exercise_id WHERE users_id = ?);";
-			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				ps.setInt(1, users_id);
-				try (ResultSet rs = ps.executeQuery()) {
-					while(rs.next()) {
-						Exercise loadedExercise = new Exercise();
-						loadedExercise.id = rs.getInt("id");
-						loadedExercise.title = rs.getString("title");
-						loadedExercise.description = rs.getString("description");
-						exercises.add(loadedExercise);
-					}
-				}
-			}
-		} catch (SQLException e) {
-			System.out.println("Database error!");
-			e.printStackTrace();
-		}
-		Exercise eArray[] = new Exercise[exercises.size()];
-		eArray = exercises.toArray(eArray);
-		return eArray;
+
+	static Exercise[] loadAllExercises() {
+		return loadExercisesBy(true, 0);
+	}
+
+	static Exercise[] allExercisesNotByUserId(int user_id) {
+		return loadExercisesBy(false, user_id);
 	}
 
 	private static Exercise[] loadExercisesBy(boolean loadAll, int param){
@@ -176,7 +129,7 @@ public class Exercise {
 		String sql;
 		if(loadAll) sql = "SELECT * FROM exercise;";
 		else sql = "SELECT * FROM exercise WHERE exercise.id NOT IN (SELECT exercise.id FROM exercise JOIN solution ON exercise.id = solution.exercise_id WHERE user_id = ?);";
-		ArrayList<Exercise> exercisesByParamArrayList = new ArrayList<>();
+		List<Exercise> exercisesByParamArrayList = new ArrayList<>();
 		try (Connection con = DriverManager.getConnection(dbUrl, exercise, pswd)) {
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				if(param!=0) ps.setInt(1, param);

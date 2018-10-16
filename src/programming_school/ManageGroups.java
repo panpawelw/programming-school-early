@@ -8,20 +8,20 @@ public class ManageGroups {
 			loadAllGroupsInterface();
 			String command = Demo.getTextFromConsole("Enter command:");
 			switch (command) {
-			case "quit":
-				System.out.println("Bye!");
-				return;
-			case "add":
-				addGroupInterface();
-				break;
-			case "edit":
-				editGroupInterface();
-				break;
-			case "delete":
-				deleteGroupInterface();
-				break;
-			default:
-				System.out.println("Unknown command!");
+				case "quit":
+					System.out.println("Bye!");
+					return;
+				case "add":
+					addGroupInterface();
+					break;
+				case "edit":
+					editGroupInterface();
+					break;
+				case "delete":
+					deleteGroupInterface();
+					break;
+				default:
+					System.out.println("Unknown command!");
 			}
 		}
 	}
@@ -39,15 +39,10 @@ public class ManageGroups {
 		group.saveGroupToDB();
 	}
 
-	public static void editGroupInterface() {
-		@SuppressWarnings({ "resource" })
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter ID of the group you want to edit: ");
-		while(!scanner.hasNextInt()) scanner.next();
-		int id = scanner.nextInt();
-		Group group = new Group();
-		group = Group.loadGroupById(id);
-		if(group==null) {
+	static void editGroupInterface() {
+		int id = Demo.getIntFromConsole("Enter ID of the group you want to edit:");
+		Group group = Group.loadGroupById(id);
+		if (group == null) {
 			return;
 		}
 		String name = Demo.getTextFromConsole("Enter new group name:");
@@ -55,15 +50,10 @@ public class ManageGroups {
 		group.saveGroupToDB();
 	}
 
-	public static void deleteGroupInterface() {
-		@SuppressWarnings({ "resource" })
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Enter ID of the group you want to delete: ");
-		while(!scanner.hasNextInt()) scanner.next();
-		int id = scanner.nextInt();
-		Group group = new Group();
-		group = Group.loadGroupById(id);
-		if(group==null) {
+	static void deleteGroupInterface() {
+		int id = Demo.getIntFromConsole("Enter ID of the group you want to delete:");
+		Group group = Group.loadGroupById(id);
+		if (group == null) {
 			return;
 		}
 		group.deleteGroup();

@@ -6,9 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-
 import mindrot.jbcrypt.BCrypt;
 
 public class User {
@@ -19,7 +19,8 @@ public class User {
 	private String email;
 	private int usergroup_id;
 
-	public User() {}
+	public User() {
+	}
 
 	public User(String username, String email, String password, int usergroup_id) {
 		this.username = username;
@@ -70,8 +71,8 @@ public class User {
 		String pswd = "mojSQL";
 		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
 			if (this.id == 0) {
-				String sql = "INSERT INTO users(username, email, password, person_group_id) VALUES (?, ?, ?, ?);";
-				String generatedColumns[] = { " ID " };
+				String sql = "INSERT INTO user(username, email, password, usergroup_id) VALUES (?, ?, ?, ?);";
+				String generatedColumns[] = {" ID "};
 				try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
 					ps.setString(1, this.username);
 					ps.setString(2, this.email);
@@ -124,12 +125,8 @@ public class User {
 		System.out.println("No such user!");
 		return null;
 	}
-	
-	static public User[] loadAllUsers() {
-		return loadUsersBy(true, 0);
-	}
-	
-	public void deleteUser() {
+
+	void deleteUser() {
 		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
 		String user = "root";
 		String pswd = "mojSQL";
@@ -138,7 +135,7 @@ public class User {
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, this.id);
 				ps.executeUpdate();
-				this.id=0;
+				this.id = 0;
 			}
 		} catch (SQLException e) {
 			System.out.println("Database error!");
@@ -146,11 +143,50 @@ public class User {
 		}
 	}
 
+	static User[] loadAllUsers() {
+		return loadUsersBy(true, 0);
+	}
+
 	static User[] loadAllbyGroupId(int usergroup_id) {
 		return loadUsersBy(false, usergroup_id);
 	}
-	
-	
+
+	private static User[] loadUsersBy(boolean loadAll, int param){
+		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
+		String user = "root";
+		String pswd = "mojSQL";
+		String sql;
+		if(loadAll) sql = "SELECT * FROM user;";
+			else sql = "SELECT * FROM user WHERE usergroup_id=?;";
+		List<User> usersByParamArrayList = new ArrayList<>();
+		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
+			try (PreparedStatement ps = con.prepareStatement(sql)) {
+				if(param!=0) ps.setInt(1, param);
+				try (ResultSet rs = ps.executeQuery()) {
+					while (rs.next()) {
+						usersByParamArrayList.add(loadUser(rs));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Database error!");
+			e.printStackTrace();
+		}
+		User[] usersByParamArray = new User[usersByParamArrayList.size()];
+		usersByParamArray = usersByParamArrayList.toArray(usersByParamArray);
+		return usersByParamArray;
+	}
+
+	private static User loadUser(ResultSet rs) throws SQLException {
+		User loadedUser = new User();
+		loadedUser.id = rs.getInt("id");
+		loadedUser.username = rs.getString("username");
+		loadedUser.password = rs.getString("password");
+		loadedUser.email = rs.getString("email");
+		loadedUser.usergroup_id = rs.getInt("usergroup_id");
+		return loadedUser;
+	}
+
 	@Override
 	public String toString() {
 		return this.id + ": " + this.username + " email: " + this.email + " group: " + this.usergroup_id;
