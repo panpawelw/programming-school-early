@@ -1,7 +1,6 @@
-package programming_school;
+package pl.pjm77.app;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -66,13 +65,10 @@ public class User {
 	}
 
 	void saveUserToDB() {
-		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
-		String user = "root";
-		String pswd = "mojSQL";
-		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
+		try (Connection con = SQLConnection.connect()) {
 			if (this.id == 0) {
 				String sql = "INSERT INTO user(username, email, password, usergroup_id) VALUES (?, ?, ?, ?);";
-				String generatedColumns[] = {" ID "};
+				String[] generatedColumns = {" ID "};
 				try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
 					ps.setString(1, this.username);
 					ps.setString(2, this.email);
@@ -105,10 +101,7 @@ public class User {
 	}
 
 	static User loadUserById(int id) {
-		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
-		String user = "root";
-		String pswd = "mojSQL";
-		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
+		try (Connection con = SQLConnection.connect()) {
 			String sql = "SELECT * FROM user WHERE id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, id);
@@ -127,10 +120,7 @@ public class User {
 	}
 
 	void deleteUser() {
-		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
-		String user = "root";
-		String pswd = "mojSQL";
-		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
+		try (Connection con = SQLConnection.connect()) {
 			String sql = "DELETE FROM user WHERE id=?";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, this.id);
@@ -152,14 +142,11 @@ public class User {
 	}
 
 	private static User[] loadUsersBy(boolean loadAll, int param){
-		String dbUrl = "jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8";
-		String user = "root";
-		String pswd = "mojSQL";
 		String sql;
 		if(loadAll) sql = "SELECT * FROM user;";
 			else sql = "SELECT * FROM user WHERE usergroup_id=?;";
 		List<User> usersByParamArrayList = new ArrayList<>();
-		try (Connection con = DriverManager.getConnection(dbUrl, user, pswd)) {
+		try (Connection con = SQLConnection.connect()) {
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				if(param!=0) ps.setInt(1, param);
 				try (ResultSet rs = ps.executeQuery()) {

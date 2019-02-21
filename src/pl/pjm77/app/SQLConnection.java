@@ -1,4 +1,4 @@
-package programming_school;
+package pl.pjm77.app;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,25 +6,21 @@ import java.sql.SQLException;
 
 public class SQLConnection {
 
-	private Connection connection = null;
+	private static Connection connection = null;
 
-	public Connection connect() {
+	public static Connection connect() throws SQLException{
 
-		try {
-			this.connection = DriverManager.getConnection(
+		connection = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/programming_school?useSSL=false&characterEncoding=utf-8",
 					"root", "mojSQL");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		return connection;
 	}
 
-	public void disconnect() {
+	public static void disconnect() {
 
-		if (this.connection != null) {
+		if (connection != null) {
 			try {
-				this.connection.close();
+				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
